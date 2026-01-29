@@ -154,7 +154,7 @@ These three equations govern real-world deployment and compute optimization.
 
 ## **Why Pascal?**
 
-**Common question**: "Why Pascal in 2025? Why not Python?"
+**Common question**: "Why Pascal in 2026? Why not Python?"
 
 **Answer**: Pascal is **pedagogical** - it reads like algorithmic pseudocode but compiles and runs.
 
