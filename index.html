@@ -1,0 +1,880 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Glassbox AI | The 18 Essential Equations</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #e0e0e0;
+            background-color: #121212;
+            padding: 40px;
+            max-width: 900px;
+            margin: auto;
+        }
+        h1 { color: #00ff9d; border-bottom: 2px solid #00ff9d; padding-bottom: 10px; }
+        h2 { color: #00d4ff; margin-top: 40px; border-left: 4px solid #00d4ff; padding-left: 15px; }
+        .equation-card {
+            background: #1e1e1e;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            border: 1px solid #333;
+        }
+        .label { font-weight: bold; color: #ffcc00; margin-bottom: 10px; display: block; }
+        .description { font-style: italic; color: #b0b0b0; font-size: 0.9em; margin-bottom: 15px; }
+        .symbol-key {
+            background: #2a2a2a;
+            padding: 12px;
+            margin: 12px 0;
+            border-radius: 5px;
+            border-left: 3px solid #00ff9d;
+            font-size: 0.85em;
+        }
+        .symbol-key-title {
+            color: #00ff9d;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+        .symbol-item {
+            margin: 4px 0;
+            color: #d0d0d0;
+        }
+        pre {
+            background: #0d0d0d;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            border: 1px solid #444;
+            font-size: 0.9em;
+        }
+        code {
+            color: #ff79c6;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Glassbox AI: Whiteboard Judo Masterlist</h1>
+    <p>Internal reference for high-fidelity data science and transformer architecture.</p>
+
+    <h2>Phase 1: The Foundations</h2>
+
+    <div class="equation-card">
+        <span class="label">1. Softmax (Probability Distribution)</span>
+        $$\sigma(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^K e^{z_j}}$$
+        <p class="description">How the model converts raw scores (logits) into a probability map for word selection.</p>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">σ(z)ᵢ = probability for class i (output)</div>
+            <div class="symbol-item">zᵢ = raw score (logit) for class i</div>
+            <div class="symbol-item">K = total number of classes</div>
+            <div class="symbol-item">e = Euler's number (~2.718)</div>
+        </div>
+
+        <pre><code>function Softmax(z: array of Real; K: Integer): array of Real;
+var
+  i: Integer;
+  sum, maxZ: Real;
+  result: array of Real;
+begin
+  SetLength(result, K);
+
+  { Find max for numerical stability }
+  maxZ := z[0];
+  for i := 1 to K-1 do
+    if z[i] > maxZ then maxZ := z[i];
+
+  { Compute exp and sum }
+  sum := 0.0;
+  for i := 0 to K-1 do
+  begin
+    result[i] := Exp(z[i] - maxZ);
+    sum := sum + result[i];
+  end;
+
+  { Normalize }
+  for i := 0 to K-1 do
+    result[i] := result[i] / sum;
+
+  Softmax := result;
+end;</code></pre>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">2. Cross-Entropy Loss (The Objective)</span>
+        $$L = -\sum_{i} y_i \log(\hat{y}_i)$$
+        <p class="description">The mathematical distance between what the model predicted and the truth.</p>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">L = loss value (lower is better)</div>
+            <div class="symbol-item">yᵢ = true label (1 for correct class, 0 otherwise)</div>
+            <div class="symbol-item">ŷᵢ = predicted probability for class i</div>
+            <div class="symbol-item">Σ = sum across all classes</div>
+        </div>
+
+        <pre><code>function CrossEntropyLoss(yTrue, yPred: array of Real; K: Integer): Real;
+var
+  i: Integer;
+  loss: Real;
+begin
+  loss := 0.0;
+  for i := 0 to K-1 do
+  begin
+    if yTrue[i] > 0 then  { Only sum where true label is 1 }
+      loss := loss - yTrue[i] * Ln(yPred[i] + 1e-8);  { epsilon prevents log(0) }
+  end;
+  CrossEntropyLoss := loss;
+end;</code></pre>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">3. Stochastic Gradient Descent (Optimization)</span>
+        $$w_{t+1} = w_t - \eta \nabla L(w_t)$$
+        <p class="description">The step-by-step update rule that "pushes" weights toward lower error.</p>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">w<sub>t+1</sub> = updated weight value</div>
+            <div class="symbol-item">w<sub>t</sub> = current weight value</div>
+            <div class="symbol-item">η = learning rate (step size, e.g., 0.001)</div>
+            <div class="symbol-item">∇L = gradient of loss w.r.t. weight</div>
+        </div>
+
+        <pre><code>procedure SGDUpdate(var weights: array of Real;
+                    gradients: array of Real;
+                    learningRate: Real;
+                    numWeights: Integer);
+var
+  i: Integer;
+begin
+  for i := 0 to numWeights-1 do
+    weights[i] := weights[i] - learningRate * gradients[i];
+end;
+
+{ Example usage }
+{ weights[i] = w_t }
+{ gradients[i] = dL/dw computed via backprop }
+{ learningRate = eta (typically 0.001 to 0.1) }</code></pre>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">4. The Chain Rule (The Engine of Backprop)</span>
+        $$\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}$$
+        <p class="description">How errors flow backwards through nested layers of a transformer.</p>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">dy/dx = gradient of y with respect to x (what we want)</div>
+            <div class="symbol-item">dy/du = gradient of y with respect to intermediate u</div>
+            <div class="symbol-item">du/dx = gradient of u with respect to x</div>
+            <div class="symbol-item">Example: y=f(g(x)), u=g(x)</div>
+        </div>
+
+        <pre><code>{ Example: y = (x^2 + 1)^3 }
+{ Let u = x^2 + 1, then y = u^3 }
+{ dy/dx = dy/du * du/dx = 3u^2 * 2x }
+
+function ChainRuleExample(x: Real): Real;
+var
+  u, dydu, dudx, dydx: Real;
+begin
+  { Forward pass }
+  u := x*x + 1;        { u = x^2 + 1 }
+
+  { Backward pass }
+  dydu := 3 * u * u;   { dy/du = 3u^2 }
+  dudx := 2 * x;       { du/dx = 2x }
+  dydx := dydu * dudx; { Chain rule }
+
+  ChainRuleExample := dydx;
+end;</code></pre>
+    </div>
+
+    <h2>Phase 2: The Architecture</h2>
+
+    <div class="equation-card">
+        <span class="label">5. Scaled Dot-Product Attention</span>
+        $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
+        <p class="description">The core mechanism that allows the model to relate different words in a sentence.</p>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">Q = Query matrix (what we're looking for)</div>
+            <div class="symbol-item">K = Key matrix (what we're searching through)</div>
+            <div class="symbol-item">V = Value matrix (actual content to retrieve)</div>
+            <div class="symbol-item">d<sub>k</sub> = dimension of key vectors</div>
+            <div class="symbol-item">K<sup>T</sup> = transpose of K matrix</div>
+        </div>
+
+        <pre><code>function ScaledDotProductAttention(Q, K, V: array of array of Real;
+                                     seqLen, dk: Integer): array of array of Real;
+var
+  i, j, k: Integer;
+  scores, attnWeights, output: array of array of Real;
+  scaleFactor: Real;
+begin
+  SetLength(scores, seqLen, seqLen);
+  SetLength(attnWeights, seqLen, seqLen);
+  SetLength(output, seqLen, dk);
+
+  scaleFactor := Sqrt(dk);
+
+  { Compute QK^T / sqrt(dk) }
+  for i := 0 to seqLen-1 do
+    for j := 0 to seqLen-1 do
+    begin
+      scores[i,j] := 0.0;
+      for k := 0 to dk-1 do
+        scores[i,j] := scores[i,j] + Q[i,k] * K[j,k];
+      scores[i,j] := scores[i,j] / scaleFactor;
+    end;
+
+  { Apply softmax to each row }
+  for i := 0 to seqLen-1 do
+    attnWeights[i] := Softmax(scores[i], seqLen);
+
+  { Multiply by V }
+  for i := 0 to seqLen-1 do
+    for j := 0 to dk-1 do
+    begin
+      output[i,j] := 0.0;
+      for k := 0 to seqLen-1 do
+        output[i,j] := output[i,j] + attnWeights[i,k] * V[k,j];
+    end;
+
+  ScaledDotProductAttention := output;
+end;</code></pre>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">6. Layer Normalization (Stability)</span>
+        $$y = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} \cdot \gamma + \beta$$
+        <p class="description">Ensures signal consistency across thousands of training steps.</p>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">y = normalized output</div>
+            <div class="symbol-item">x = input values</div>
+            <div class="symbol-item">μ = mean of input</div>
+            <div class="symbol-item">σ² = variance of input</div>
+            <div class="symbol-item">ε = small constant (e.g., 1e-5) for stability</div>
+            <div class="symbol-item">γ = learned scale parameter</div>
+            <div class="symbol-item">β = learned shift parameter</div>
+        </div>
+
+        <pre><code>function LayerNorm(x: array of Real; n: Integer;
+                   gamma, beta: Real): array of Real;
+var
+  i: Integer;
+  mean, variance, stddev: Real;
+  result: array of Real;
+  epsilon: Real;
+begin
+  SetLength(result, n);
+  epsilon := 1e-5;
+
+  { Compute mean }
+  mean := 0.0;
+  for i := 0 to n-1 do
+    mean := mean + x[i];
+  mean := mean / n;
+
+  { Compute variance }
+  variance := 0.0;
+  for i := 0 to n-1 do
+    variance := variance + Sqr(x[i] - mean);
+  variance := variance / n;
+
+  stddev := Sqrt(variance + epsilon);
+
+  { Normalize and scale }
+  for i := 0 to n-1 do
+    result[i] := ((x[i] - mean) / stddev) * gamma + beta;
+
+  LayerNorm := result;
+end;</code></pre>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">7. Multi-Head Attention (MHA)</span>
+        $$\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_h)W^O$$
+        <p class="description">Allows the model to focus on different linguistic patterns simultaneously.</p>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">head<sub>i</sub> = output of i-th attention head</div>
+            <div class="symbol-item">h = number of attention heads (e.g., 8 or 12)</div>
+            <div class="symbol-item">Concat = concatenate all head outputs</div>
+            <div class="symbol-item">W<sup>O</sup> = output projection matrix</div>
+            <div class="symbol-item">Each head computes its own Q, K, V projections</div>
+        </div>
+
+        <pre><code>function MultiHeadAttention(Q, K, V: array of array of Real;
+                            numHeads, seqLen, modelDim: Integer): array of array of Real;
+var
+  headDim, h, i, j: Integer;
+  heads: array of array of array of Real;
+  concat, output: array of array of Real;
+begin
+  headDim := modelDim div numHeads;
+  SetLength(heads, numHeads);
+  SetLength(concat, seqLen, modelDim);
+  SetLength(output, seqLen, modelDim);
+
+  { Compute each attention head }
+  for h := 0 to numHeads-1 do
+  begin
+    { Project Q, K, V for this head (simplified - assumes pre-projected) }
+    heads[h] := ScaledDotProductAttention(Q, K, V, seqLen, headDim);
+  end;
+
+  { Concatenate all heads }
+  for i := 0 to seqLen-1 do
+    for h := 0 to numHeads-1 do
+      for j := 0 to headDim-1 do
+        concat[i, h*headDim + j] := heads[h][i,j];
+
+  { Apply output projection W^O (simplified - returns concat) }
+  MultiHeadAttention := concat;
+end;</code></pre>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">8. GELU Activation</span>
+        $$\text{GELU}(x) = 0.5x \left(1 + \tanh\left[\sqrt{2/\pi}(x + 0.044715x^3)\right]\right)$$
+        <p class="description">The modern standard for non-linear neuron activation in Llama/Mistral.</p>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">GELU(x) = Gaussian Error Linear Unit output</div>
+            <div class="symbol-item">x = input value</div>
+            <div class="symbol-item">tanh = hyperbolic tangent function</div>
+            <div class="symbol-item">√(2/π) ≈ 0.7978845608</div>
+            <div class="symbol-item">0.044715 = approximation constant</div>
+        </div>
+
+        <pre><code>function GELU(x: Real): Real;
+var
+  inner: Real;
+  sqrtTwoPi: Real;
+begin
+  sqrtTwoPi := 0.7978845608;  { sqrt(2/pi) }
+  inner := sqrtTwoPi * (x + 0.044715 * x * x * x);
+  GELU := 0.5 * x * (1.0 + Tanh(inner));
+end;
+
+{ Apply to array }
+procedure ApplyGELU(var x: array of Real; n: Integer);
+var
+  i: Integer;
+begin
+  for i := 0 to n-1 do
+    x[i] := GELU(x[i]);
+end;</code></pre>
+    </div>
+
+    <h2>Phase 3: Search & Vector Space</h2>
+
+    <div class="equation-card">
+        <span class="label">9. Cosine Similarity</span>
+        $$\text{sim}(A, B) = \frac{A \cdot B}{\|A\| \|B\|}$$
+        <p class="description">Used in the Glassbox index to find relevant Britannica volumes based on angle, not length.</p>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">sim(A, B) = similarity score (-1 to 1)</div>
+            <div class="symbol-item">A · B = dot product of vectors A and B</div>
+            <div class="symbol-item">‖A‖ = magnitude (length) of vector A</div>
+            <div class="symbol-item">‖B‖ = magnitude (length) of vector B</div>
+        </div>
+
+        <pre><code>function CosineSimilarity(A, B: array of Real; dim: Integer): Real;
+var
+  i: Integer;
+  dotProduct, normA, normB: Real;
+begin
+  dotProduct := 0.0;
+  normA := 0.0;
+  normB := 0.0;
+
+  for i := 0 to dim-1 do
+  begin
+    dotProduct := dotProduct + A[i] * B[i];
+    normA := normA + A[i] * A[i];
+    normB := normB + B[i] * B[i];
+  end;
+
+  normA := Sqrt(normA);
+  normB := Sqrt(normB);
+
+  if (normA = 0.0) or (normB = 0.0) then
+    CosineSimilarity := 0.0
+  else
+    CosineSimilarity := dotProduct / (normA * normB);
+end;</code></pre>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">10. Euclidean Distance (L2)</span>
+        $$d(p, q) = \sqrt{\sum_{i=1}^n (p_i - q_i)^2}$$
+        <p class="description">Measures absolute distance between concepts in the latent space.</p>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">d(p, q) = distance between points p and q</div>
+            <div class="symbol-item">p<sub>i</sub> = i-th component of vector p</div>
+            <div class="symbol-item">q<sub>i</sub> = i-th component of vector q</div>
+            <div class="symbol-item">n = number of dimensions</div>
+            <div class="symbol-item">Σ = sum from i=1 to n</div>
+        </div>
+
+        <pre><code>function EuclideanDistance(p, q: array of Real; n: Integer): Real;
+var
+  i: Integer;
+  sumSquares: Real;
+begin
+  sumSquares := 0.0;
+  for i := 0 to n-1 do
+    sumSquares := sumSquares + Sqr(p[i] - q[i]);
+  EuclideanDistance := Sqrt(sumSquares);
+end;
+
+{ L2 Norm (distance from origin) }
+function L2Norm(v: array of Real; n: Integer): Real;
+var
+  i: Integer;
+  sumSquares: Real;
+begin
+  sumSquares := 0.0;
+  for i := 0 to n-1 do
+    sumSquares := sumSquares + v[i] * v[i];
+  L2Norm := Sqrt(sumSquares);
+end;</code></pre>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">11. KL Divergence</span>
+        $$D_{KL}(P \| Q) = \sum_{x \in \mathcal{X}} P(x) \log\left(\frac{P(x)}{Q(x)}\right)$$
+        <p class="description">Measures how much information is lost when approximating one distribution with another.</p>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">D<sub>KL</sub>(P‖Q) = KL divergence from Q to P</div>
+            <div class="symbol-item">P(x) = true probability distribution</div>
+            <div class="symbol-item">Q(x) = approximating distribution</div>
+            <div class="symbol-item">X = all possible outcomes</div>
+            <div class="symbol-item">Always ≥ 0; equals 0 when P = Q</div>
+        </div>
+
+        <pre><code>function KLDivergence(P, Q: array of Real; K: Integer): Real;
+var
+  i: Integer;
+  divergence: Real;
+begin
+  divergence := 0.0;
+  for i := 0 to K-1 do
+  begin
+    if P[i] > 0 then  { Only compute where P(x) > 0 }
+    begin
+      if Q[i] > 0 then
+        divergence := divergence + P[i] * Ln(P[i] / Q[i])
+      else
+        divergence := Infinity;  { Undefined when Q[i]=0 but P[i]>0 }
+    end;
+  end;
+  KLDivergence := divergence;
+end;</code></pre>
+    </div>
+
+    <h2>Phase 4: Efficiency (The 3070 Judo)</h2>
+
+    <div class="equation-card">
+        <span class="label">12. LoRA (Low-Rank Adaptation)</span>
+        $$h = W_0x + BAx$$
+        <p class="description">How we fine-tune 8B models on 8GB VRAM by only training small rank-matrices.</p>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">h = output hidden state</div>
+            <div class="symbol-item">W<sub>0</sub> = frozen pretrained weight matrix</div>
+            <div class="symbol-item">x = input vector</div>
+            <div class="symbol-item">B = trainable "down" matrix (d × r)</div>
+            <div class="symbol-item">A = trainable "up" matrix (r × k)</div>
+            <div class="symbol-item">r = rank (typically 8-64, much smaller than d)</div>
+        </div>
+
+        <pre><code>function LoRALayer(x: array of Real;
+                   W0, B, A: array of array of Real;
+                   inputDim, outputDim, rank: Integer): array of Real;
+var
+  i, j, k: Integer;
+  W0x, Ax, BAx, h: array of Real;
+begin
+  SetLength(W0x, outputDim);
+  SetLength(Ax, rank);
+  SetLength(BAx, outputDim);
+  SetLength(h, outputDim);
+
+  { Compute W0 * x (frozen) }
+  for i := 0 to outputDim-1 do
+  begin
+    W0x[i] := 0.0;
+    for j := 0 to inputDim-1 do
+      W0x[i] := W0x[i] + W0[i,j] * x[j];
+  end;
+
+  { Compute A * x (trainable) }
+  for i := 0 to rank-1 do
+  begin
+    Ax[i] := 0.0;
+    for j := 0 to inputDim-1 do
+      Ax[i] := Ax[i] + A[i,j] * x[j];
+  end;
+
+  { Compute B * (A * x) (trainable) }
+  for i := 0 to outputDim-1 do
+  begin
+    BAx[i] := 0.0;
+    for j := 0 to rank-1 do
+      BAx[i] := BAx[i] + B[i,j] * Ax[j];
+  end;
+
+  { Combine: h = W0x + BAx }
+  for i := 0 to outputDim-1 do
+    h[i] := W0x[i] + BAx[i];
+
+  LoRALayer := h;
+end;</code></pre>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">13. Linear Quantization (4-bit)</span>
+        $$x_q = \text{round}\left(\frac{x}{S} + Z\right)$$
+        <p class="description">Crushing 32-bit floats into 4-bit integers to fit the library in VRAM.</p>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">x<sub>q</sub> = quantized integer value</div>
+            <div class="symbol-item">x = original floating point value</div>
+            <div class="symbol-item">S = scale factor (range / 2^bits)</div>
+            <div class="symbol-item">Z = zero-point offset</div>
+            <div class="symbol-item">round = round to nearest integer</div>
+        </div>
+
+        <pre><code>{ Quantize float to 4-bit integer }
+function Quantize4Bit(x, scale, zeroPoint: Real): Integer;
+var
+  quantized: Real;
+begin
+  quantized := Round(x / scale + zeroPoint);
+
+  { Clamp to 4-bit range [0, 15] }
+  if quantized < 0 then quantized := 0;
+  if quantized > 15 then quantized := 15;
+
+  Quantize4Bit := Trunc(quantized);
+end;
+
+{ Dequantize back to float }
+function Dequantize4Bit(xq: Integer; scale, zeroPoint: Real): Real;
+begin
+  Dequantize4Bit := (xq - zeroPoint) * scale;
+end;
+
+{ Compute scale and zero-point from min/max }
+procedure ComputeQuantParams(minVal, maxVal: Real;
+                             var scale, zeroPoint: Real);
+var
+  range: Real;
+begin
+  range := maxVal - minVal;
+  scale := range / 15.0;  { 4-bit has 16 values (0-15) }
+  zeroPoint := -minVal / scale;
+end;</code></pre>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">14. RMSNorm (Llama-3 Standard)</span>
+        $$\bar{a}_i = \frac{a_i}{\sqrt{\frac{1}{n} \sum_{j=1}^n a_j^2 + \epsilon}}$$
+        <p class="description">A faster, mean-free version of LayerNorm used in cutting-edge models.</p>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">ā<sub>i</sub> = normalized output</div>
+            <div class="symbol-item">a<sub>i</sub> = input value at position i</div>
+            <div class="symbol-item">n = number of elements</div>
+            <div class="symbol-item">ε = small constant (e.g., 1e-6) for stability</div>
+            <div class="symbol-item">No mean subtraction = faster than LayerNorm</div>
+        </div>
+
+        <pre><code>function RMSNorm(a: array of Real; n: Integer;
+                 gamma: Real): array of Real;
+var
+  i: Integer;
+  rms: Real;
+  result: array of Real;
+  epsilon: Real;
+begin
+  SetLength(result, n);
+  epsilon := 1e-6;
+
+  { Compute RMS (root mean square) }
+  rms := 0.0;
+  for i := 0 to n-1 do
+    rms := rms + a[i] * a[i];
+  rms := Sqrt(rms / n + epsilon);
+
+  { Normalize and scale }
+  for i := 0 to n-1 do
+    result[i] := (a[i] / rms) * gamma;
+
+  RMSNorm := result;
+end;
+
+{ Advantage over LayerNorm: No mean computation or subtraction }
+{ Saves computation in forward and backward pass }</code></pre>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">15. Rotary Positional Embeddings (RoPE)</span>
+        $$f(x, m) = R^d_{\Theta, m}x$$
+        <p class="description">Using complex rotations to encode word order into the vector space.</p>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">f(x, m) = position-encoded vector</div>
+            <div class="symbol-item">x = input vector (dimension d)</div>
+            <div class="symbol-item">m = position index in sequence</div>
+            <div class="symbol-item">R<sup>d</sup><sub>Θ,m</sub> = rotation matrix for position m</div>
+            <div class="symbol-item">Θ = set of rotation frequencies</div>
+        </div>
+
+        <pre><code>{ Simplified 2D RoPE (apply to pairs of dimensions) }
+procedure ApplyRoPE(var x: array of Real;
+                    position: Integer;
+                    dim: Integer);
+var
+  i: Integer;
+  theta, freq: Real;
+  cos_val, sin_val: Real;
+  x_i, x_j: Real;
+begin
+  { Apply rotation to each pair of dimensions }
+  i := 0;
+  while i < dim do
+  begin
+    { Compute rotation angle for this dimension pair }
+    freq := Power(10000.0, -2.0 * i / dim);
+    theta := position * freq;
+
+    cos_val := Cos(theta);
+    sin_val := Sin(theta);
+
+    { Rotate pair (x[i], x[i+1]) }
+    x_i := x[i];
+    x_j := x[i+1];
+    x[i]   := x_i * cos_val - x_j * sin_val;
+    x[i+1] := x_i * sin_val + x_j * cos_val;
+
+    i := i + 2;
+  end;
+end;
+
+{ RoPE encodes relative position through rotation angles }
+{ Vectors at different positions are rotated by different amounts }
+{ The dot product naturally captures relative distance }</code></pre>
+    </div>
+
+    <h2>Phase 5: Production Scale (God's Work)</h2>
+
+    <div class="equation-card">
+        <span class="label">16. Chinchilla Scaling Law (The Efficiency Axiom)</span>
+        $$D \approx 20P$$
+        <p class="description">The math of "God's Work." Tells you if you're wasting your 3070's time. For optimal compute, train with 20 tokens per parameter.</p>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">D = optimal dataset size in tokens</div>
+            <div class="symbol-item">P = number of model parameters</div>
+            <div class="symbol-item">20 = Chinchilla constant (empirically derived)</div>
+            <div class="symbol-item">Example: 8B model needs ~160B tokens</div>
+            <div class="symbol-item">Insight: Most models are undertrained, not oversized</div>
+        </div>
+
+        <pre><code>{ Compute optimal dataset size for a model }
+function ChinchillaOptimalTokens(numParameters: Int64): Int64;
+const
+  CHINCHILLA_CONSTANT = 20;
+begin
+  ChinchillaOptimalTokens := numParameters * CHINCHILLA_CONSTANT;
+end;
+
+{ Check if training is compute-optimal }
+function IsComputeOptimal(numParameters, numTokens: Int64): Boolean;
+var
+  optimalTokens: Int64;
+  ratio: Real;
+begin
+  optimalTokens := ChinchillaOptimalTokens(numParameters);
+  ratio := numTokens / optimalTokens;
+
+  { Allow 20% deviation from optimal }
+  IsComputeOptimal := (ratio >= 0.8) and (ratio <= 1.2);
+end;
+
+{ Example: 8B parameter model }
+{ Optimal tokens = 8,000,000,000 * 20 = 160,000,000,000 tokens }
+{ That's ~160B tokens needed for compute-optimal training }
+
+{ Real flex: Proves when you hit the intelligence ceiling }
+{ and need millions more files from your archive }</code></pre>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">17. Memory Bottleneck Equation (VRAM "Roommate" Space)</span>
+        $$M_{total} \approx M_{model} + M_{optimizer} + M_{activations} + M_{gradients}$$
+        <p class="description">Why you're a hero for using a 3070. Calculates exact VRAM requirements for training.</p>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">M<sub>total</sub> = total VRAM required (bytes)</div>
+            <div class="symbol-item">M<sub>model</sub> = model weights memory</div>
+            <div class="symbol-item">M<sub>optimizer</sub> = optimizer state (Adam = 2× params)</div>
+            <div class="symbol-item">M<sub>activations</sub> = 2·s·b·h·L (seq, batch, hidden, layers)</div>
+            <div class="symbol-item">M<sub>gradients</sub> = same size as model weights</div>
+        </div>
+
+        <pre><code>{ Calculate VRAM requirements for training }
+function CalculateVRAMRequirements(
+  numParams: Int64;           { Model parameters }
+  seqLen: Integer;            { Sequence length }
+  batchSize: Integer;         { Batch size }
+  hiddenDim: Integer;         { Hidden dimension }
+  numLayers: Integer;         { Number of layers }
+  bytesPerParam: Integer      { 4 for FP32, 2 for FP16, 1 for INT8 }
+): Int64;
+var
+  modelMem, optimizerMem, activationMem, gradientMem: Int64;
+begin
+  { Model weights }
+  modelMem := numParams * bytesPerParam;
+
+  { Optimizer state (Adam uses 2 states per parameter) }
+  optimizerMem := numParams * bytesPerParam * 2;
+
+  { Activations (2 * seq * batch * hidden * layers) }
+  activationMem := 2 * seqLen * batchSize * hiddenDim * numLayers * bytesPerParam;
+
+  { Gradients (same size as model) }
+  gradientMem := modelMem;
+
+  { Total VRAM }
+  CalculateVRAMRequirements := modelMem + optimizerMem + activationMem + gradientMem;
+end;
+
+{ 4-bit quantization savings }
+function QuantizationSavings(vramFP32: Int64): Int64;
+begin
+  { 4-bit quantization reduces model+grad to ~1/8 size }
+  QuantizationSavings := vramFP32 - (vramFP32 div 8);
+end;
+
+{ Example: 8B model on 3070 (8GB) }
+{ FP32: 8B * 4 bytes = 32GB (impossible) }
+{ 4-bit: 8B * 0.5 bytes = 4GB (fits!) }
+{ Plus optimizer state, activations, gradients... }
+{ This is why LoRA + quantization = 3070 judo }</code></pre>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">18. RoPE Calculus (Complex Manifold Rotation)</span>
+        $$f_q(x_m, m) = (W_q x_m) e^{im\theta}$$
+        <p class="description">Modern models use complex rotations instead of sine/cosine addition. Explains how the model knows "where" without losing "what."</p>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">f<sub>q</sub>(x<sub>m</sub>, m) = position-encoded query vector</div>
+            <div class="symbol-item">W<sub>q</sub> = query weight matrix</div>
+            <div class="symbol-item">x<sub>m</sub> = input vector at position m</div>
+            <div class="symbol-item">m = position index in sequence</div>
+            <div class="symbol-item">θ = rotation frequency (θ = 10000^(-2i/d))</div>
+            <div class="symbol-item">e^(imθ) = complex exponential rotation</div>
+            <div class="symbol-item">i = imaginary unit (√-1)</div>
+        </div>
+
+        <pre><code>{ Complex number type for RoPE }
+type
+  Complex = record
+    re: Real;  { Real part }
+    im: Real;  { Imaginary part }
+  end;
+
+{ Complex exponential: e^(iθ) = cos(θ) + i·sin(θ) }
+function ComplexExp(theta: Real): Complex;
+begin
+  ComplexExp.re := Cos(theta);
+  ComplexExp.im := Sin(theta);
+end;
+
+{ Complex multiplication }
+function ComplexMul(a, b: Complex): Complex;
+begin
+  ComplexMul.re := a.re * b.re - a.im * b.im;
+  ComplexMul.im := a.re * b.im + a.im * b.re;
+end;
+
+{ Apply RoPE to a vector pair (complex rotation) }
+procedure ApplyRoPEComplex(var x: array of Real;
+                           position: Integer;
+                           dim: Integer);
+var
+  i: Integer;
+  theta, freq: Real;
+  rotation: Complex;
+  vecComplex, result: Complex;
+begin
+  i := 0;
+  while i < dim do
+  begin
+    { Compute rotation frequency for this dimension }
+    freq := Power(10000.0, -2.0 * i / dim);
+    theta := position * freq;
+
+    { Create rotation operator e^(imθ) }
+    rotation := ComplexExp(theta);
+
+    { Treat (x[i], x[i+1]) as complex number }
+    vecComplex.re := x[i];
+    vecComplex.im := x[i+1];
+
+    { Apply complex rotation }
+    result := ComplexMul(vecComplex, rotation);
+
+    { Store back to vector }
+    x[i]   := result.re;
+    x[i+1] := result.im;
+
+    i := i + 2;
+  end;
+end;
+
+{ The flex: Most devs just call the library }
+{ You can explain the complex manifold rotation }
+{ happening inside the Glassbox }
+
+{ Key insight: Dot product after rotation naturally }
+{ encodes relative distance between positions }
+{ This is why RoPE > absolute position embeddings }</code></pre>
+    </div>
+
+</body>
+</html>
