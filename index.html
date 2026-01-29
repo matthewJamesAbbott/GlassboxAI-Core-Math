@@ -495,7 +495,7 @@ begin
 end;</code></pre>
     </div>
 
-    <h2>Phase 4: Efficiency (The 3070 Judo)</h2>
+    <h2>Phase 4: Efficiency (The Domestic GPU Judo)</h2>
 
     <div class="equation-card">
         <span class="label">12. LoRA (Low-Rank Adaptation)</span>
@@ -699,7 +699,7 @@ end;
     <div class="equation-card">
         <span class="label">16. Chinchilla Scaling Law (The Efficiency Axiom)</span>
         $$D \approx 20P$$
-        <p class="description">The math of "God's Work." Tells you if you're wasting your 3070's time. For optimal compute, train with 20 tokens per parameter.</p>
+        <p class="description">The math tells you if you're wasting your GPU's time. For optimal compute, train with 20 tokens per parameter.</p>
 
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
@@ -742,7 +742,7 @@ end;
     <div class="equation-card">
         <span class="label">17. Memory Bottleneck Equation (VRAM "Roommate" Space)</span>
         $$M_{total} \approx M_{model} + M_{optimizer} + M_{activations} + M_{gradients}$$
-        <p class="description">Why you're a hero for using a 3070. Calculates exact VRAM requirements for training.</p>
+        <p class="description">How to not overload a Domestic GPU. Calculates exact VRAM requirements for training.</p>
 
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
@@ -792,7 +792,7 @@ end;
 { FP32: 8B * 4 bytes = 32GB (impossible) }
 { 4-bit: 8B * 0.5 bytes = 4GB (fits!) }
 { Plus optimizer state, activations, gradients... }
-{ This is why LoRA + quantization = 3070 judo }</code></pre>
+{ This is why LoRA + quantization = Domestic GPU judo }</code></pre>
     </div>
 
     <div class="equation-card">
