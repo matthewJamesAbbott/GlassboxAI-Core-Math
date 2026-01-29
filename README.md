@@ -96,7 +96,7 @@ These three equations govern how we find and measure semantic similarity.
 
 ---
 
-### **Phase 4: Efficiency (The 3070 Judo)**
+### **Phase 4: Efficiency (Domestic GPU Judo)**
 
 These four equations enable training large models on consumer hardware.
 
