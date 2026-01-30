@@ -1,6 +1,6 @@
 # GlassBoxAI-Core-Math
 
-## **The 18 Essential Equations for AI Engineering**
+## **The 35 Essential Equations for AI Engineering**
 
 ### *Mathematical Foundations with Pascal Implementations*
 
@@ -15,12 +15,13 @@
 
 ## **Overview**
 
-GlassBoxAI-Core-Math is an educational reference documenting the 18 fundamental equations that underpin modern deep learning and transformer architectures. Unlike typical ML resources that hide complexity behind libraries, this project provides:
+GlassBoxAI-Core-Math is an educational reference documenting the 35 fundamental equations that underpin modern deep learning across all major architectures. Unlike typical ML resources that hide complexity behind libraries, this project provides:
 
 - **Complete mathematical explanations** for each equation
 - **Symbol-by-symbol breakdowns** with plain English descriptions
 - **Pascal implementations** showing algorithmic clarity
 - **Real-world context** explaining why each equation matters
+- **Cross-architecture coverage** - Transformers, CNNs, RNNs, GNNs, GANs, Random Forests, and MLPs
 - **Interview preparation** for whiteboard coding scenarios
 
 This resource is designed for three audiences:
@@ -34,21 +35,22 @@ This resource is designed for three audiences:
 
 ## **Table of Contents**
 
-1. [The 18 Equations](#the-18-equations)
-2. [How to Use This Resource](#how-to-use-this-resource)
-3. [Why Pascal?](#why-pascal)
-4. [Interview Strategy](#interview-strategy)
-5. [Learning Path](#learning-path)
-6. [Technical Background](#technical-background)
-7. [Related Projects](#related-projects)
-8. [License](#license)
-9. [Author](#author)
+1. [The 35 Equations](#the-35-equations)
+2. [Architecture Coverage](#architecture-coverage)
+3. [How to Use This Resource](#how-to-use-this-resource)
+4. [Why Pascal?](#why-pascal)
+5. [Interview Strategy](#interview-strategy)
+6. [Learning Path](#learning-path)
+7. [Cross-Reference Guide](#cross-reference-guide)
+8. [Related Projects](#related-projects)
+9. [License](#license)
+10. [Author](#author)
 
 ---
 
-## **The 18 Equations**
+## **The 35 Equations**
 
-### **Phase 1: The Foundations**
+### **Phase 1: The Foundations (Equations 1-4)**
 
 These four equations form the bedrock of all neural network training.
 
@@ -67,7 +69,7 @@ These four equations form the bedrock of all neural network training.
 
 ---
 
-### **Phase 2: The Architecture**
+### **Phase 2: The Architecture - Transformers (Equations 5-8)**
 
 These four equations define the transformer architecture that powers GPT, LLaMA, and modern LLMs.
 
@@ -82,7 +84,7 @@ These four equations define the transformer architecture that powers GPT, LLaMA,
 
 ---
 
-### **Phase 3: Search & Vector Space**
+### **Phase 3: Search & Vector Space (Equations 9-11)**
 
 These three equations govern how we find and measure semantic similarity.
 
@@ -96,7 +98,7 @@ These three equations govern how we find and measure semantic similarity.
 
 ---
 
-### **Phase 4: Efficiency (Domestic GPU Judo)**
+### **Phase 4: Efficiency - Domestic GPU Judo (Equations 12-15)**
 
 These four equations enable training large models on consumer hardware.
 
@@ -111,7 +113,7 @@ These four equations enable training large models on consumer hardware.
 
 ---
 
-### **Phase 5: Production Scale (God's Work)**
+### **Phase 5: Production Scale (Equations 16-18)**
 
 These three equations govern real-world deployment and compute optimization.
 
@@ -128,27 +130,145 @@ These three equations govern real-world deployment and compute optimization.
 
 ---
 
+### **Phase 6: Multi-Layer Perceptron (Equation 19)**
+
+The fundamental building block of feedforward neural networks.
+
+| # | Equation | Purpose | Interview Frequency |
+|---|----------|---------|-------------------|
+| **19** | **Affine Transformation** | Linear layer + activation | ⭐⭐⭐⭐⭐ Always |
+
+**Why this matters**: MLPs are the backbone of nearly every neural architecture. Understanding `y = σ(Wx + b)` is absolutely fundamental.
+
+---
+
+### **Phase 7: Recurrent Neural Networks (Equations 20-21)**
+
+Sequential processing with memory - the foundation of time-series and sequence modeling.
+
+| # | Equation | Purpose | Interview Frequency |
+|---|----------|---------|-------------------|
+| **20** | **Recurrent Hidden State** | Memory across time steps | ⭐⭐⭐⭐ Very Common |
+| **21** | **RNN Output** | Readout layer | ⭐⭐⭐ Common |
+
+**Why these matter**: Before transformers dominated, RNNs ruled sequence modeling. Still critical for streaming data, online learning, and understanding LSTM/GRU architectures.
+
+---
+
+### **Phase 8: Graph Neural Networks (Equations 22-24)**
+
+Learning on graph-structured data - social networks, molecules, knowledge graphs.
+
+| # | Equation | Purpose | Interview Frequency |
+|---|----------|---------|-------------------|
+| **22** | **Message Function** | Node-to-node communication | ⭐⭐⭐ Rising |
+| **23** | **Aggregation** | Permutation-invariant pooling | ⭐⭐⭐ Rising |
+| **24** | **Node Update** | Combine old + new information | ⭐⭐⭐ Rising |
+
+**Why these matter**: GNNs are exploding in drug discovery, social network analysis, and recommendation systems. Understanding message-passing is key to modern graph learning.
+
+---
+
+### **Phase 9: Convolutional Neural Networks (Equations 25-27)**
+
+Spatial pattern recognition - the backbone of computer vision.
+
+| # | Equation | Purpose | Interview Frequency |
+|---|----------|---------|-------------------|
+| **25** | **2D Convolution** | Sliding window feature extraction | ⭐⭐⭐⭐⭐ Critical |
+| **26** | **Output Dimension Calculation** | VRAM planning formula | ⭐⭐⭐⭐ Very Common |
+| **27** | **Max Pooling** | Spatial downsampling | ⭐⭐⭐ Common |
+
+**Why these matter**: Despite transformer vision models, CNNs remain dominant in production CV systems. Understanding convolution mechanics is essential for any vision role.
+
+---
+
+### **Phase 10: Random Forest (Equations 28-30)**
+
+Classical ensemble learning - still unbeaten on tabular data.
+
+| # | Equation | Purpose | Interview Frequency |
+|---|----------|---------|-------------------|
+| **28** | **Gini Impurity** | Split quality metric | ⭐⭐⭐⭐ Very Common |
+| **29** | **Information Gain** | Entropy-based splitting | ⭐⭐⭐ Common |
+| **30** | **Forest Ensemble** | Majority vote aggregation | ⭐⭐⭐ Common |
+
+**Why these matter**: Random forests often outperform neural networks on structured/tabular data. Understanding decision tree mechanics is crucial for data science interviews.
+
+---
+
+### **Phase 11: Generative Adversarial Networks (Equations 31-35)**
+
+Adversarial training for realistic data generation.
+
+| # | Equation | Purpose | Interview Frequency |
+|---|----------|---------|-------------------|
+| **31** | **Minimax GAN Loss** | Core adversarial game | ⭐⭐⭐⭐ Very Common |
+| **32** | **Wasserstein GAN** | Improved stability | ⭐⭐⭐ Rising |
+| **33** | **Generator Loss (Non-saturating)** | Avoid gradient vanishing | ⭐⭐⭐ Common |
+| **34** | **Mode Collapse Detection** | Diversity metric | ⭐⭐ Moderate |
+| **35** | **Conditional GAN** | Controlled generation | ⭐⭐⭐ Common |
+
+**Why these matter**: GANs power image generation, style transfer, and data augmentation. Understanding the adversarial training dynamics is key to debugging GAN training instability.
+
+---
+
+## **Architecture Coverage**
+
+This resource now covers **all major neural network architectures**:
+
+| Architecture | Equations | Primary Use Cases |
+|--------------|-----------|-------------------|
+| **Transformers** | 5-8, 12, 14-18 | NLP, LLMs, Vision Transformers |
+| **MLP** | 19 | Tabular data, simple classification |
+| **RNN/LSTM/GRU** | 20-21 | Time series, streaming data, online learning |
+| **GNN** | 22-24 | Social networks, molecules, knowledge graphs |
+| **CNN** | 25-27 | Computer vision, image classification, detection |
+| **Random Forest** | 28-30 | Tabular data, feature importance, interpretability |
+| **GAN** | 31-35 | Image generation, style transfer, data augmentation |
+| **Foundational** | 1-4 | Universal (all architectures use these) |
+| **Vector Search** | 9-11 | RAG, semantic search, embeddings |
+| **Efficiency** | 12-13 | Edge deployment, low-resource training |
+
+---
+
 ## **How to Use This Resource**
 
 ### **For Learning**
 
-1. **Start with Phase 1** - You cannot understand transformers without these foundations
-2. **Code the Pascal implementations** - Typing out the algorithms builds intuition
-3. **Modify the examples** - Change dimensions, add debug prints, break things intentionally
-4. **Work backwards from equations** - Given an equation, derive the Pascal code yourself
+1. **Start with Phase 1** - You cannot understand any architecture without these foundations
+2. **Choose your path**:
+   - **NLP/LLMs** → Phases 1-5 (Transformers focus)
+   - **Computer Vision** → Phases 1, 6, 9 (MLP + CNN)
+   - **Time Series** → Phases 1, 6, 7 (MLP + RNN)
+   - **Graph Learning** → Phases 1, 6, 8 (MLP + GNN)
+   - **Generative AI** → Phases 1, 6, 9, 11 (MLP + CNN + GAN)
+   - **Tabular/Classical ML** → Phases 1, 6, 10 (MLP + Random Forest)
+3. **Code the Pascal implementations** - Typing out the algorithms builds intuition
+4. **Cross-reference architectures** - See how equations combine (e.g., CNN features → Transformer, RNN + Attention)
 
 ### **For Interview Prep**
 
 1. **Memorize the symbol keys** - Know what every Greek letter represents
-2. **Practice whiteboard coding** - Write Softmax, Attention, and SGD from memory
+2. **Practice whiteboard coding** - Essential equations:
+   - **Always**: Softmax (1), Cross-Entropy (2), SGD (3), Affine Transform (19)
+   - **Transformers**: Attention (5), Multi-Head (7)
+   - **CNNs**: Convolution (25), Output Size (26)
+   - **RNNs**: Hidden State (20)
+   - **GNNs**: Message Passing (22-24)
+   - **GANs**: Minimax Loss (31)
 3. **Explain the "why"** - Interviewers care more about understanding than memorization
-4. **Know the failure modes** - What breaks without the √d_k scaling? Why epsilon in LayerNorm?
+4. **Know the failure modes**:
+   - What breaks without the √d_k scaling in attention?
+   - Why does GAN training collapse without proper techniques?
+   - When does vanishing gradient hit RNNs?
 
 ### **For Implementation**
 
 1. **Use as reference** - When implementing from scratch, verify against these formulas
 2. **Debug with introspection** - The Pascal code shows intermediate values you can log
 3. **Optimize carefully** - Understand the naive version before vectorizing/fusing
+4. **Cross-architecture patterns** - Notice how convolution is just a specialized attention mechanism
 
 ---
 
@@ -219,7 +339,9 @@ for i := 0 to seqLen-1 do
 
 ---
 
-### **Common Interview Questions**
+### **Common Interview Questions by Architecture**
+
+#### **Transformers**
 
 **Q1**: "Why divide by √d_k in attention?"  
 **A1**: High-dimensional dot products have large variance. Scaling prevents softmax saturation in high dimensions, which would kill gradients.
@@ -230,8 +352,53 @@ for i := 0 to seqLen-1 do
 **Q3**: "Explain LoRA in 30 seconds"  
 **A3**: Instead of fine-tuning all weights W, freeze W and train small matrices B,A such that h = Wx + BAx. The rank of BA is much smaller than W, so we train 1-2% of parameters.
 
-**Q4**: "How much VRAM to train an 8B model?"  
-**A4**: Model weights (32GB FP32), optimizer state (64GB for Adam), activations (depends on batch/sequence), gradients (32GB). Total ~130GB+ for FP32. With 4-bit quantization and LoRA: ~12-16GB.
+#### **CNNs**
+
+**Q4**: "How do you calculate CNN output dimensions?"  
+**A4**: O = ⌊(I - F + 2P) / S⌋ + 1, where I=input size, F=filter size, P=padding, S=stride. Critical for VRAM planning.
+
+**Q5**: "Why use pooling layers?"  
+**A5**: Downsample spatial dimensions, reduce parameters, provide translation invariance, and prevent overfitting. Max pooling captures strongest activations.
+
+#### **RNNs**
+
+**Q6**: "What's the vanishing gradient problem in RNNs?"  
+**A6**: Gradients get multiplied by recurrent weights at each time step during backprop. If weights < 1, gradients vanish exponentially with sequence length. LSTMs solve this with gating.
+
+**Q7**: "RNN vs Transformer for sequences?"  
+**A7**: RNNs process sequentially (can't parallelize), but have O(1) memory per step. Transformers parallelize fully but have O(n²) attention complexity. Transformers win for batch processing, RNNs for streaming.
+
+#### **GNNs**
+
+**Q8**: "How do GNNs handle variable graph sizes?"  
+**A8**: Aggregation functions (sum, mean, max) are permutation-invariant and work on any number of neighbors. Node embeddings are fixed-size regardless of graph structure.
+
+**Q9**: "What's oversmoothing in GNNs?"  
+**A9**: After many layers, all node embeddings become similar as information diffuses across the graph. Solutions: skip connections, layer normalization, careful depth selection.
+
+#### **GANs**
+
+**Q10**: "Why do GANs suffer from mode collapse?"  
+**A10**: Generator finds one or few successful patterns that fool the discriminator and stops exploring. Solutions: Wasserstein loss, minibatch discrimination, feature matching.
+
+**Q11**: "Original GAN vs WGAN?"  
+**A11**: Original uses JS divergence (log loss), suffers from vanishing gradients when D is too strong. WGAN uses Earth Mover's Distance (no log), provides meaningful loss metric, more stable training.
+
+#### **Random Forest**
+
+**Q12**: "Gini vs Entropy for splitting?"  
+**A12**: Both measure impurity. Gini is faster (no log), range [0, 0.5]. Entropy is more theoretically grounded (information theory), range [0, log₂(C)]. Similar results in practice.
+
+**Q13**: "Why Random Forests over single decision trees?"  
+**A13**: Bootstrap aggregating (bagging) reduces variance, random feature selection reduces correlation between trees, ensemble voting smooths predictions. Prevents overfitting.
+
+#### **Production/Scaling**
+
+**Q14**: "How much VRAM to train an 8B model?"  
+**A14**: Model weights (32GB FP32), optimizer state (64GB for Adam), activations (depends on batch/sequence), gradients (32GB). Total ~130GB+ for FP32. With 4-bit quantization and LoRA: ~12-16GB.
+
+**Q15**: "What's the Chinchilla scaling law?"  
+**A15**: For compute-optimal training, use ~20 tokens per parameter. Most models are undertrained, not oversized. 8B model needs ~160B tokens for optimal training.
 
 ---
 
@@ -245,71 +412,92 @@ for i := 0 to seqLen-1 do
 - Code a simple gradient descent optimizer
 - Derive chain rule for a 2-layer network
 
-**Week 3-4**: Phase 2 (Architecture)
-- Implement scaled dot-product attention
-- Build a single attention head
-- Extend to multi-head attention
-- Compare ReLU vs GELU
+**Week 3-4**: Choose Your Focus
+- **NLP Track**: Phase 2 (Transformers)
+- **Vision Track**: Phase 9 (CNNs)
+- **Classical ML Track**: Phase 10 (Random Forest)
 
-**Week 5-6**: Phase 3 (Vector Space)
-- Implement cosine similarity for text embeddings
-- Build a simple vector search
-- Understand when L2 vs cosine matters
+**Week 5-6**: Phase 6 (MLP) + Your Focus Architecture
+- Build a complete MLP from scratch
+- Implement your chosen architecture
+- Understand how they combine (e.g., CNN → MLP head)
 
 **Week 7-8**: Review and Practice
-- Code all 15 core equations from memory
+- Code all core equations from memory
 - Explain each on a whiteboard
-- Implement a tiny transformer (2 layers, 64 dims)
+- Build a tiny version of your chosen architecture
 
 ---
 
 ### **Intermediate** (Some ML Experience)
 
-**Focus Areas**:
-1. **Attention mechanisms** - Implement from scratch, no libraries
-2. **Quantization** - Understand 4-bit, 8-bit quantization schemes
-3. **Memory optimization** - Calculate VRAM for different model sizes
-4. **LoRA mathematics** - Derive why low-rank works
+**Multi-Architecture Track**:
+1. **Weeks 1-2**: Transformers (Phases 2-5)
+2. **Weeks 3-4**: CNNs (Phase 9)
+3. **Weeks 5-6**: RNNs + GNNs (Phases 7-8)
+4. **Weeks 7-8**: GANs (Phase 11)
 
 **Projects**:
 - Build a mini-GPT (6 layers, 512 dims) in pure C++/Rust
-- Implement 4-bit quantization with proper scale/zero-point
-- Create a LoRA fine-tuning pipeline
+- Implement ResNet-18 from scratch
+- Create an RNN-based time series predictor
+- Build a simple GAN for MNIST generation
 
 ---
 
 ### **Advanced** (Production Experience)
 
 **Deep Dives**:
-1. **RoPE mathematics** - Complex rotation theory
-2. **Chinchilla optimality** - Compute-optimal training
-3. **KV-cache optimization** - How to speed up inference
-4. **FlashAttention** - Fused attention kernels
+1. **Cross-architecture fusion** - Vision Transformers, Graph Transformers
+2. **Advanced optimization** - FlashAttention, fused kernels, mixed precision
+3. **Production deployment** - Quantization strategies, model compression
+4. **Distributed training** - Data/model/pipeline parallelism
 
 **Challenges**:
 - Implement FlashAttention algorithm
-- Derive optimal model size for compute budget
-- Build a distributed training pipeline
+- Build a multi-GPU distributed training system
+- Create a hybrid CNN-Transformer architecture
+- Optimize GAN training stability with advanced techniques
 
 ---
 
-## **Technical Background**
+## **Cross-Reference Guide**
 
-### **What This Covers**
+Understanding how equations combine across architectures is crucial:
 
-✅ **Transformer architecture** (equations 5-8, 15, 18)  
-✅ **Training fundamentals** (equations 1-4)  
-✅ **Vector search/RAG** (equations 9-11)  
-✅ **Efficiency techniques** (equations 12-14)  
-✅ **Production scaling** (equations 16-17)  
+### **Transformer Architecture**
+- **Core**: 1 (Softmax), 2 (Cross-Entropy), 3 (SGD), 4 (Chain Rule)
+- **Architecture**: 5 (Attention), 6 (LayerNorm), 7 (Multi-Head), 8 (GELU)
+- **Efficiency**: 12 (LoRA), 13 (Quantization), 14 (RMSNorm), 15 (RoPE)
+- **Production**: 16 (Chinchilla), 17 (Memory), 18 (RoPE Calculus)
 
-### **What This Doesn't Cover**
+### **CNN Architecture**
+- **Core**: 1-4 (Foundations)
+- **Layers**: 25 (Convolution), 26 (Output Size), 27 (Pooling)
+- **Optimization**: 8 (GELU/ReLU), 13 (Quantization), 17 (Memory)
 
-❌ Convolutional networks (see GlassBoxAI-CNN)  
-❌ Recurrent networks (see GlassBoxAI-RNN)  
-❌ Graph neural networks (see GlassBoxAI-GNN)  
-❌ Reinforcement learning  
-❌ Mixture of Experts (coming soon)  
+### **RNN Architecture**
+- **Core**: 1-4 (Foundations)
+- **Recurrent**: 20 (Hidden State), 21 (Output)
+- **Modern Hybrid**: 15 (RoPE for positional encoding), 17 (Memory critical)
+
+### **GNN Architecture**
+- **Core**: 1-4 (Foundations)
+- **Message Passing**: 22 (Messages), 23 (Aggregation), 24 (Update)
+- **Optimization**: 5 (GAT attention variant), 6 (prevent oversmoothing), 9 (node similarity)
+
+### **GAN Architecture**
+- **Core**: 1-4 (Foundations)
+- **Adversarial**: 31 (Minimax), 32 (Wasserstein), 33 (Generator Loss)
+- **Diagnostics**: 34 (Mode Collapse), 10 (L2 diversity)
+- **Conditional**: 35 (cGAN)
+- **Subnetworks**: Often use CNN (25-27) or Transformer (5-7) as G/D
+
+### **Random Forest**
+- **Core**: None (classical ML, no gradient descent)
+- **Splitting**: 28 (Gini), 29 (Information Gain)
+- **Ensemble**: 30 (Voting)
+- **Optimization**: 9 (tree diversity), 13 (threshold quantization), 17 (memory)
 
 ---
 
@@ -317,14 +505,22 @@ for i := 0 to seqLen-1 do
 
 This resource is part of the **GlassBoxAI Suite** - a collection of formally verified, production-ready ML implementations:
 
-| Project | Description | Status |
-|---------|-------------|--------|
-| **[GlassBoxAI-Transformer](https://github.com/matthewJamesAbbott/GlassBoxAI-Transformer)** | Full LLM inference with GGUF support, DTX protocol | ✅ Stable |
-| **[GlassBoxAI-CNN](https://github.com/matthewJamesAbbott/GlassBoxAI-CNN)** | Convolutional networks with ONNX export | ✅ Stable |
-| **[GlassBoxAI-RNN](https://github.com/matthewJamesAbbott/GlassBoxAI-RNN)** | Recurrent networks for sequence modeling | ✅ Stable |
-| **[GlassBoxAI-GNN](https://github.com/matthewJamesAbbott/GlassBoxAI-GNN)** | Graph neural networks with PageRank | ✅ Stable |
-| **[GlassBoxAI-MLP](https://github.com/matthewJamesAbbott/GlassBoxAI-MLP)** | Multi-layer perceptrons | ✅ Stable |
-| **[GlassBoxAI-RandomForest](https://github.com/matthewJamesAbbott/GlassBoxAI-RandomForest)** | Decision tree ensembles | ✅ Stable |
+| Project | Description | Equations Used | Status |
+|---------|-------------|----------------|--------|
+| **[GlassBoxAI-Transformer](https://github.com/matthewJamesAbbott/GlassBoxAI-Transformer)** | Full LLM inference with GGUF support, DTX protocol | 1-8, 12-18 | ✅ 99 Proofs |
+| **[GlassBoxAI-CNN](https://github.com/matthewJamesAbbott/GlassBoxAI-CNN)** | Convolutional networks with ONNX export | 1-4, 25-27 | ✅ 40+ Proofs |
+| **[GlassBoxAI-RNN](https://github.com/matthewJamesAbbott/GlassBoxAI-RNN)** | Recurrent networks for sequence modeling | 1-4, 20-21 | ✅ Stable |
+| **[GlassBoxAI-GNN](https://github.com/matthewJamesAbbott/GlassBoxAI-GNN)** | Graph neural networks with PageRank | 1-4, 22-24 | ✅ 95 Proofs |
+| **[GlassBoxAI-MLP](https://github.com/matthewJamesAbbott/GlassBoxAI-MLP)** | Multi-layer perceptrons | 1-4, 19 | ✅ Stable |
+| **[GlassBoxAI-RandomForest](https://github.com/matthewJamesAbbott/GlassBoxAI-RandomForest)** | Decision tree ensembles | 28-30 | ✅ Stable |
+| **[GlassBoxAI-GAN](https://github.com/matthewJamesAbbott/GlassBoxAI-GAN)** | Generative adversarial networks | 1-4, 31-35 | 🚧 Coming Soon |
+
+**JavaScript Demos** (run instantly in browser):
+- [JavaScript-Transformer](https://github.com/matthewJamesAbbott/Javascript-Transformer)
+- [JavaScript-CNN](https://github.com/matthewJamesAbbott/Javascript-CNN)
+- [JavaScript-RNN](https://github.com/matthewJamesAbbott/Javascript-RNN)
+- [JavaScript-GNN](https://github.com/matthewJamesAbbott/Javascript-GNN)
+- [JavaScript-GAN](https://github.com/matthewJamesAbbott/Javascript-GAN)
 
 All projects feature:
 - **CISA/NSA Secure by Design compliance**
@@ -332,6 +528,27 @@ All projects feature:
 - **Multi-language implementations** (C++/CUDA, Rust, OpenCL, JavaScript)
 - **Facade pattern** for deep introspection
 - **Production-ready** code quality
+
+---
+
+## **Complete Ecosystem Path**
+
+For each equation, you can follow this learning progression:
+
+**1. Mathematical Notation** (this page) - Understand the formula  
+**2. Pascal Algorithm** (this page) - See explicit implementation  
+**3. Working Prototype** - Pascal-Datastructures repo  
+**4. Facade Introspection** - Deep layer inspection  
+**5. Production Implementation** - CUDA/Rust with formal verification  
+**6. Browser Demo** - JavaScript version (no install required)  
+
+**Example: Equation 5 (Attention)**
+1. Math: `Attention(Q,K,V) = softmax(QK^T/√d_k)V`
+2. Pascal: Explicit Q·K^T computation (this page)
+3. Prototype: [Transformer.pas](https://github.com/matthewJamesAbbott/Pascal-Datastructures/blob/master/Transformer.pas)
+4. Facade: [FacadeTransformer.pas](https://github.com/matthewJamesAbbott/Pascal-Datastructures/blob/master/FacadeTransformer.pas)
+5. Production: [GlassBoxAI-Transformer](https://github.com/matthewJamesAbbott/GlassBoxAI-Transformer) (99 proofs)
+6. Demo: [JavaScript-Transformer](https://github.com/matthewJamesAbbott/Javascript-Transformer)
 
 ---
 
@@ -364,6 +581,10 @@ This resource provides steps 1-2. The other GlassBoxAI projects provide producti
 
 If you can't explain it, you don't understand it. If you can't implement it from scratch, you don't own it. This resource exists to eliminate the magic.
 
+### **We All Deserve a Fair Go**
+
+Knowledge should be accessible to everyone. The kid in Mumbai with a phone deserves the same resources as the Stanford grad student with a research cluster. All GlassBoxAI projects are MIT licensed - hack it, learn from it, build with it, commercialize it.
+
 ---
 
 ## **Contributing**
@@ -376,6 +597,7 @@ Found an error in the math? Have a clearer way to explain an equation? Want to a
 - Alternative explanations
 - Interview question additions
 - Translation to other languages
+- New architecture coverage
 
 **Not welcome**:
 - Replacing Pascal with Python/NumPy (misses the pedagogical point)
@@ -390,17 +612,28 @@ Found an error in the math? Have a clearer way to explain an equation? Want to a
 
 **A**: Framework docs explain **how to use the API**, not **how it works internally**. This resource teaches the fundamentals that frameworks abstract away.
 
+### **Q: Do I need to learn all 35 equations?**
+
+**A**: Depends on your role:
+- **NLP/LLM Engineer**: Master 1-8, 12-18 (Transformers)
+- **Computer Vision**: Master 1-4, 25-27 (CNNs)
+- **Time Series/Sequential**: Master 1-4, 20-21 (RNNs)
+- **Graph ML**: Master 1-4, 22-24 (GNNs)
+- **Generative AI**: Master 1-4, 31-35 (GANs)
+- **Data Scientist (Tabular)**: Master 1-4, 28-30 (Random Forest)
+- **ML Generalist**: Know foundations (1-4, 19), understand all architectures conceptually
+
 ### **Q: Is this enough to get a job?**
 
-**A**: Knowing these 18 equations won't get you hired alone, but **not knowing them will disqualify you** from serious ML roles. This is necessary but not sufficient.
+**A**: Knowing these equations won't get you hired alone, but **not knowing them will disqualify you** from serious ML roles. This is necessary but not sufficient.
 
-### **Q: Should I memorize all 18?**
+### **Q: Which architecture should I learn first?**
 
-**A**: Memorize 1-7 (foundations + core attention). Understand 8-15. Be familiar with 16-18. You won't derive RoPE on a whiteboard, but you should know what it does.
-
-### **Q: Where's the deep learning for computer vision content?**
-
-**A**: See [GlassBoxAI-CNN](https://github.com/matthewJamesAbbott/GlassBoxAI-CNN) for convolutional architectures, pooling, batch normalization, and more.
+**A**: After foundations (1-4):
+- **Easiest**: MLP (19) → Random Forest (28-30)
+- **Most Practical Today**: Transformers (5-8)
+- **Best for Intuition**: CNN (25-27)
+- **Most Challenging**: GANs (31-35)
 
 ### **Q: Why is this free?**
 
@@ -415,8 +648,9 @@ This resource draws from:
 - **"Training Compute-Optimal Large Language Models"** (Hoffmann et al., 2022) - Chinchilla scaling
 - **"LoRA: Low-Rank Adaptation of Large Language Models"** (Hu et al., 2021) - Parameter-efficient fine-tuning
 - **"RoFormer: Enhanced Transformer with Rotary Position Embedding"** (Su et al., 2021) - RoPE mechanics
-
-And countless Stack Overflow answers, blog posts, and whiteboard sessions with colleagues.
+- **"Generative Adversarial Nets"** (Goodfellow et al., 2014) - Original GAN formulation
+- **"Wasserstein GAN"** (Arjovsky et al., 2017) - Improved GAN training
+- **Countless Stack Overflow answers, blog posts, and whiteboard sessions with colleagues**
 
 ---
 
@@ -449,3 +683,5 @@ GitHub: [@matthewJamesAbbott](https://github.com/matthewJamesAbbott)
 *"The only magic is the act we do that we don't understand. We make glassboxes here. No magic is allowed."*
 
 *Built with precision. Explained with clarity. Understood completely.*
+
+**35 Equations. 7 Architectures. Complete Understanding.**
