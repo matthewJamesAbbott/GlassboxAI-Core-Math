@@ -583,7 +583,7 @@ If you can't explain it, you don't understand it. If you can't implement it from
 
 ### **We All Deserve a Fair Go**
 
-Knowledge should be accessible to everyone. The kid in Mumbai with a phone deserves the same resources as the Stanford grad student with a research cluster. All GlassBoxAI projects are MIT licensed - hack it, learn from it, build with it, commercialize it.
+Knowledge should be accessible to everyone. The kid with a phone deserves the same resources as the Stanford grad student with a research cluster. All GlassBoxAI projects are MIT licensed - hack it, learn from it, build with it, commercialize it.
 
 ---
 
@@ -684,7 +684,7 @@ Found an error in the math? Have a clearer way to explain an equation? Want to a
 
 ### **Q: Why is this free?**
 
-**A**: Knowledge should be accessible. The kid in Mumbai with a phone deserves the same resources as the Stanford grad student with a research cluster. We all deserve a fair go.
+**A**: Knowledge should be accessible. The kid with a phone deserves the same resources as the Stanford grad student with a research cluster. We all deserve a fair go.
 
 ---
 
