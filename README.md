@@ -581,10 +581,6 @@ This resource provides steps 1-2. The other GlassBoxAI projects provide producti
 
 If you can't explain it, you don't understand it. If you can't implement it from scratch, you don't own it. This resource exists to eliminate the magic.
 
-### **We All Deserve a Fair Go**
-
-Knowledge should be accessible to everyone. The kid with a phone deserves the same resources as the Stanford grad student with a research cluster. All GlassBoxAI projects are MIT licensed - hack it, learn from it, build with it, commercialize it.
-
 ---
 
 ## **Formal Verification with Kani**
@@ -670,10 +666,6 @@ Found an error in the math? Have a clearer way to explain an equation? Want to a
 - **Data Scientist (Tabular)**: Master 1-4, 28-30 (Random Forest)
 - **ML Generalist**: Know foundations (1-4, 19), understand all architectures conceptually
 
-### **Q: Is this enough to get a job?**
-
-**A**: Knowing these equations won't get you hired alone, but **not knowing them will disqualify you** from serious ML roles. This is necessary but not sufficient.
-
 ### **Q: Which architecture should I learn first?**
 
 **A**: After foundations (1-4):
@@ -681,10 +673,6 @@ Found an error in the math? Have a clearer way to explain an equation? Want to a
 - **Most Practical Today**: Transformers (5-8)
 - **Best for Intuition**: CNN (25-27)
 - **Most Challenging**: GANs (31-35)
-
-### **Q: Why is this free?**
-
-**A**: Knowledge should be accessible. The kid with a phone deserves the same resources as the Stanford grad student with a research cluster. We all deserve a fair go.
 
 ---
 
