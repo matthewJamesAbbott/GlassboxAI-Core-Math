@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Glassbox AI | The 18 Essential Equations</title>
+    <title>Glassbox AI | The 35 Essential Equations</title>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
@@ -57,6 +57,28 @@
             color: #ff79c6;
             font-family: 'Courier New', monospace;
         }
+        .network-tags {
+            margin: 10px 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .network-tag {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .tag-transformer { background-color: #8b5cf6; color: white; }
+        .tag-mlp { background-color: #3b82f6; color: white; }
+        .tag-rnn { background-color: #10b981; color: white; }
+        .tag-gnn { background-color: #f59e0b; color: white; }
+        .tag-cnn { background-color: #ef4444; color: white; }
+        .tag-rf { background-color: #ec4899; color: white; }
+        .tag-gan { background-color: #14b8a6; color: white; }
+        .tag-all { background-color: #6366f1; color: white; }
     </style>
 </head>
 <body>
@@ -70,7 +92,7 @@
         <span class="label">1. Softmax (Probability Distribution)</span>
         $$\sigma(\mathbf{z})_i = \frac{e^{z_i}}{\sum_{j=1}^K e^{z_j}}$$
         <p class="description">How the model converts raw scores (logits) into a probability map for word selection.</p>
-
+        
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
             <div class="symbol-item">σ(z)ᵢ = probability for class i (output)</div>
@@ -86,12 +108,12 @@ var
   result: array of Real;
 begin
   SetLength(result, K);
-
+  
   { Find max for numerical stability }
   maxZ := z[0];
   for i := 1 to K-1 do
     if z[i] > maxZ then maxZ := z[i];
-
+  
   { Compute exp and sum }
   sum := 0.0;
   for i := 0 to K-1 do
@@ -99,11 +121,11 @@ begin
     result[i] := Exp(z[i] - maxZ);
     sum := sum + result[i];
   end;
-
+  
   { Normalize }
   for i := 0 to K-1 do
     result[i] := result[i] / sum;
-
+  
   Softmax := result;
 end;</code></pre>
     </div>
@@ -112,7 +134,7 @@ end;</code></pre>
         <span class="label">2. Cross-Entropy Loss (The Objective)</span>
         $$L = -\sum_{i} y_i \log(\hat{y}_i)$$
         <p class="description">The mathematical distance between what the model predicted and the truth.</p>
-
+        
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
             <div class="symbol-item">L = loss value (lower is better)</div>
@@ -140,7 +162,7 @@ end;</code></pre>
         <span class="label">3. Stochastic Gradient Descent (Optimization)</span>
         $$w_{t+1} = w_t - \eta \nabla L(w_t)$$
         <p class="description">The step-by-step update rule that "pushes" weights toward lower error.</p>
-
+        
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
             <div class="symbol-item">w<sub>t+1</sub> = updated weight value</div>
@@ -149,7 +171,7 @@ end;</code></pre>
             <div class="symbol-item">∇L = gradient of loss w.r.t. weight</div>
         </div>
 
-        <pre><code>procedure SGDUpdate(var weights: array of Real;
+        <pre><code>procedure SGDUpdate(var weights: array of Real; 
                     gradients: array of Real;
                     learningRate: Real;
                     numWeights: Integer);
@@ -170,7 +192,7 @@ end;
         <span class="label">4. The Chain Rule (The Engine of Backprop)</span>
         $$\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}$$
         <p class="description">How errors flow backwards through nested layers of a transformer.</p>
-
+        
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
             <div class="symbol-item">dy/dx = gradient of y with respect to x (what we want)</div>
@@ -189,12 +211,12 @@ var
 begin
   { Forward pass }
   u := x*x + 1;        { u = x^2 + 1 }
-
+  
   { Backward pass }
   dydu := 3 * u * u;   { dy/du = 3u^2 }
   dudx := 2 * x;       { du/dx = 2x }
   dydx := dydu * dudx; { Chain rule }
-
+  
   ChainRuleExample := dydx;
 end;</code></pre>
     </div>
@@ -205,7 +227,7 @@ end;</code></pre>
         <span class="label">5. Scaled Dot-Product Attention</span>
         $$\text{Attention}(Q, K, V) = \text{softmax}\left(\frac{QK^T}{\sqrt{d_k}}\right)V$$
         <p class="description">The core mechanism that allows the model to relate different words in a sentence.</p>
-
+        
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
             <div class="symbol-item">Q = Query matrix (what we're looking for)</div>
@@ -225,9 +247,9 @@ begin
   SetLength(scores, seqLen, seqLen);
   SetLength(attnWeights, seqLen, seqLen);
   SetLength(output, seqLen, dk);
-
+  
   scaleFactor := Sqrt(dk);
-
+  
   { Compute QK^T / sqrt(dk) }
   for i := 0 to seqLen-1 do
     for j := 0 to seqLen-1 do
@@ -237,11 +259,11 @@ begin
         scores[i,j] := scores[i,j] + Q[i,k] * K[j,k];
       scores[i,j] := scores[i,j] / scaleFactor;
     end;
-
+  
   { Apply softmax to each row }
   for i := 0 to seqLen-1 do
     attnWeights[i] := Softmax(scores[i], seqLen);
-
+  
   { Multiply by V }
   for i := 0 to seqLen-1 do
     for j := 0 to dk-1 do
@@ -250,7 +272,7 @@ begin
       for k := 0 to seqLen-1 do
         output[i,j] := output[i,j] + attnWeights[i,k] * V[k,j];
     end;
-
+  
   ScaledDotProductAttention := output;
 end;</code></pre>
     </div>
@@ -259,7 +281,7 @@ end;</code></pre>
         <span class="label">6. Layer Normalization (Stability)</span>
         $$y = \frac{x - \mu}{\sqrt{\sigma^2 + \epsilon}} \cdot \gamma + \beta$$
         <p class="description">Ensures signal consistency across thousands of training steps.</p>
-
+        
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
             <div class="symbol-item">y = normalized output</div>
@@ -281,25 +303,25 @@ var
 begin
   SetLength(result, n);
   epsilon := 1e-5;
-
+  
   { Compute mean }
   mean := 0.0;
   for i := 0 to n-1 do
     mean := mean + x[i];
   mean := mean / n;
-
+  
   { Compute variance }
   variance := 0.0;
   for i := 0 to n-1 do
     variance := variance + Sqr(x[i] - mean);
   variance := variance / n;
-
+  
   stddev := Sqrt(variance + epsilon);
-
+  
   { Normalize and scale }
   for i := 0 to n-1 do
     result[i] := ((x[i] - mean) / stddev) * gamma + beta;
-
+  
   LayerNorm := result;
 end;</code></pre>
     </div>
@@ -308,7 +330,7 @@ end;</code></pre>
         <span class="label">7. Multi-Head Attention (MHA)</span>
         $$\text{MultiHead}(Q, K, V) = \text{Concat}(\text{head}_1, \dots, \text{head}_h)W^O$$
         <p class="description">Allows the model to focus on different linguistic patterns simultaneously.</p>
-
+        
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
             <div class="symbol-item">head<sub>i</sub> = output of i-th attention head</div>
@@ -329,20 +351,20 @@ begin
   SetLength(heads, numHeads);
   SetLength(concat, seqLen, modelDim);
   SetLength(output, seqLen, modelDim);
-
+  
   { Compute each attention head }
   for h := 0 to numHeads-1 do
   begin
     { Project Q, K, V for this head (simplified - assumes pre-projected) }
     heads[h] := ScaledDotProductAttention(Q, K, V, seqLen, headDim);
   end;
-
+  
   { Concatenate all heads }
   for i := 0 to seqLen-1 do
     for h := 0 to numHeads-1 do
       for j := 0 to headDim-1 do
         concat[i, h*headDim + j] := heads[h][i,j];
-
+  
   { Apply output projection W^O (simplified - returns concat) }
   MultiHeadAttention := concat;
 end;</code></pre>
@@ -352,7 +374,7 @@ end;</code></pre>
         <span class="label">8. GELU Activation</span>
         $$\text{GELU}(x) = 0.5x \left(1 + \tanh\left[\sqrt{2/\pi}(x + 0.044715x^3)\right]\right)$$
         <p class="description">The modern standard for non-linear neuron activation in Llama/Mistral.</p>
-
+        
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
             <div class="symbol-item">GELU(x) = Gaussian Error Linear Unit output</div>
@@ -388,7 +410,7 @@ end;</code></pre>
         <span class="label">9. Cosine Similarity</span>
         $$\text{sim}(A, B) = \frac{A \cdot B}{\|A\| \|B\|}$$
         <p class="description">Used in the Glassbox index to find relevant Britannica volumes based on angle, not length.</p>
-
+        
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
             <div class="symbol-item">sim(A, B) = similarity score (-1 to 1)</div>
@@ -405,17 +427,17 @@ begin
   dotProduct := 0.0;
   normA := 0.0;
   normB := 0.0;
-
+  
   for i := 0 to dim-1 do
   begin
     dotProduct := dotProduct + A[i] * B[i];
     normA := normA + A[i] * A[i];
     normB := normB + B[i] * B[i];
   end;
-
+  
   normA := Sqrt(normA);
   normB := Sqrt(normB);
-
+  
   if (normA = 0.0) or (normB = 0.0) then
     CosineSimilarity := 0.0
   else
@@ -427,7 +449,7 @@ end;</code></pre>
         <span class="label">10. Euclidean Distance (L2)</span>
         $$d(p, q) = \sqrt{\sum_{i=1}^n (p_i - q_i)^2}$$
         <p class="description">Measures absolute distance between concepts in the latent space.</p>
-
+        
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
             <div class="symbol-item">d(p, q) = distance between points p and q</div>
@@ -465,7 +487,7 @@ end;</code></pre>
         <span class="label">11. KL Divergence</span>
         $$D_{KL}(P \| Q) = \sum_{x \in \mathcal{X}} P(x) \log\left(\frac{P(x)}{Q(x)}\right)$$
         <p class="description">Measures how much information is lost when approximating one distribution with another.</p>
-
+        
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
             <div class="symbol-item">D<sub>KL</sub>(P‖Q) = KL divergence from Q to P</div>
@@ -501,7 +523,7 @@ end;</code></pre>
         <span class="label">12. LoRA (Low-Rank Adaptation)</span>
         $$h = W_0x + BAx$$
         <p class="description">How we fine-tune 8B models on 8GB VRAM by only training small rank-matrices.</p>
-
+        
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
             <div class="symbol-item">h = output hidden state</div>
@@ -512,7 +534,7 @@ end;</code></pre>
             <div class="symbol-item">r = rank (typically 8-64, much smaller than d)</div>
         </div>
 
-        <pre><code>function LoRALayer(x: array of Real;
+        <pre><code>function LoRALayer(x: array of Real; 
                    W0, B, A: array of array of Real;
                    inputDim, outputDim, rank: Integer): array of Real;
 var
@@ -523,7 +545,7 @@ begin
   SetLength(Ax, rank);
   SetLength(BAx, outputDim);
   SetLength(h, outputDim);
-
+  
   { Compute W0 * x (frozen) }
   for i := 0 to outputDim-1 do
   begin
@@ -531,7 +553,7 @@ begin
     for j := 0 to inputDim-1 do
       W0x[i] := W0x[i] + W0[i,j] * x[j];
   end;
-
+  
   { Compute A * x (trainable) }
   for i := 0 to rank-1 do
   begin
@@ -539,7 +561,7 @@ begin
     for j := 0 to inputDim-1 do
       Ax[i] := Ax[i] + A[i,j] * x[j];
   end;
-
+  
   { Compute B * (A * x) (trainable) }
   for i := 0 to outputDim-1 do
   begin
@@ -547,11 +569,11 @@ begin
     for j := 0 to rank-1 do
       BAx[i] := BAx[i] + B[i,j] * Ax[j];
   end;
-
+  
   { Combine: h = W0x + BAx }
   for i := 0 to outputDim-1 do
     h[i] := W0x[i] + BAx[i];
-
+  
   LoRALayer := h;
 end;</code></pre>
     </div>
@@ -560,7 +582,7 @@ end;</code></pre>
         <span class="label">13. Linear Quantization (4-bit)</span>
         $$x_q = \text{round}\left(\frac{x}{S} + Z\right)$$
         <p class="description">Crushing 32-bit floats into 4-bit integers to fit the library in VRAM.</p>
-
+        
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
             <div class="symbol-item">x<sub>q</sub> = quantized integer value</div>
@@ -576,11 +598,11 @@ var
   quantized: Real;
 begin
   quantized := Round(x / scale + zeroPoint);
-
+  
   { Clamp to 4-bit range [0, 15] }
   if quantized < 0 then quantized := 0;
   if quantized > 15 then quantized := 15;
-
+  
   Quantize4Bit := Trunc(quantized);
 end;
 
@@ -591,7 +613,7 @@ begin
 end;
 
 { Compute scale and zero-point from min/max }
-procedure ComputeQuantParams(minVal, maxVal: Real;
+procedure ComputeQuantParams(minVal, maxVal: Real; 
                              var scale, zeroPoint: Real);
 var
   range: Real;
@@ -606,7 +628,7 @@ end;</code></pre>
         <span class="label">14. RMSNorm (Llama-3 Standard)</span>
         $$\bar{a}_i = \frac{a_i}{\sqrt{\frac{1}{n} \sum_{j=1}^n a_j^2 + \epsilon}}$$
         <p class="description">A faster, mean-free version of LayerNorm used in cutting-edge models.</p>
-
+        
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
             <div class="symbol-item">ā<sub>i</sub> = normalized output</div>
@@ -616,7 +638,7 @@ end;</code></pre>
             <div class="symbol-item">No mean subtraction = faster than LayerNorm</div>
         </div>
 
-        <pre><code>function RMSNorm(a: array of Real; n: Integer;
+        <pre><code>function RMSNorm(a: array of Real; n: Integer; 
                  gamma: Real): array of Real;
 var
   i: Integer;
@@ -626,17 +648,17 @@ var
 begin
   SetLength(result, n);
   epsilon := 1e-6;
-
+  
   { Compute RMS (root mean square) }
   rms := 0.0;
   for i := 0 to n-1 do
     rms := rms + a[i] * a[i];
   rms := Sqrt(rms / n + epsilon);
-
+  
   { Normalize and scale }
   for i := 0 to n-1 do
     result[i] := (a[i] / rms) * gamma;
-
+  
   RMSNorm := result;
 end;
 
@@ -648,7 +670,7 @@ end;
         <span class="label">15. Rotary Positional Embeddings (RoPE)</span>
         $$f(x, m) = R^d_{\Theta, m}x$$
         <p class="description">Using complex rotations to encode word order into the vector space.</p>
-
+        
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
             <div class="symbol-item">f(x, m) = position-encoded vector</div>
@@ -659,8 +681,8 @@ end;
         </div>
 
         <pre><code>{ Simplified 2D RoPE (apply to pairs of dimensions) }
-procedure ApplyRoPE(var x: array of Real;
-                    position: Integer;
+procedure ApplyRoPE(var x: array of Real; 
+                    position: Integer; 
                     dim: Integer);
 var
   i: Integer;
@@ -675,16 +697,16 @@ begin
     { Compute rotation angle for this dimension pair }
     freq := Power(10000.0, -2.0 * i / dim);
     theta := position * freq;
-
+    
     cos_val := Cos(theta);
     sin_val := Sin(theta);
-
+    
     { Rotate pair (x[i], x[i+1]) }
     x_i := x[i];
     x_j := x[i+1];
     x[i]   := x_i * cos_val - x_j * sin_val;
     x[i+1] := x_i * sin_val + x_j * cos_val;
-
+    
     i := i + 2;
   end;
 end;
@@ -700,7 +722,7 @@ end;
         <span class="label">16. Chinchilla Scaling Law (The Efficiency Axiom)</span>
         $$D \approx 20P$$
         <p class="description">The math tells you if you're wasting your GPU's time. For optimal compute, train with 20 tokens per parameter.</p>
-
+        
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
             <div class="symbol-item">D = optimal dataset size in tokens</div>
@@ -726,7 +748,7 @@ var
 begin
   optimalTokens := ChinchillaOptimalTokens(numParameters);
   ratio := numTokens / optimalTokens;
-
+  
   { Allow 20% deviation from optimal }
   IsComputeOptimal := (ratio >= 0.8) and (ratio <= 1.2);
 end;
@@ -735,15 +757,15 @@ end;
 { Optimal tokens = 8,000,000,000 * 20 = 160,000,000,000 tokens }
 { That's ~160B tokens needed for compute-optimal training }
 
-{ Proves when you hit the intelligence ceiling }
+{ Real flex: Proves when you hit the intelligence ceiling }
 { and need millions more files from your archive }</code></pre>
     </div>
 
     <div class="equation-card">
         <span class="label">17. Memory Bottleneck Equation (VRAM "Roommate" Space)</span>
         $$M_{total} \approx M_{model} + M_{optimizer} + M_{activations} + M_{gradients}$$
-        <p class="description">How to not overload a GPU. Calculates exact VRAM requirements for training.</p>
-
+        <p class="description">Calculates exact VRAM requirements for training.</p>
+        
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
             <div class="symbol-item">M<sub>total</sub> = total VRAM required (bytes)</div>
@@ -767,16 +789,16 @@ var
 begin
   { Model weights }
   modelMem := numParams * bytesPerParam;
-
+  
   { Optimizer state (Adam uses 2 states per parameter) }
   optimizerMem := numParams * bytesPerParam * 2;
-
+  
   { Activations (2 * seq * batch * hidden * layers) }
   activationMem := 2 * seqLen * batchSize * hiddenDim * numLayers * bytesPerParam;
-
+  
   { Gradients (same size as model) }
   gradientMem := modelMem;
-
+  
   { Total VRAM }
   CalculateVRAMRequirements := modelMem + optimizerMem + activationMem + gradientMem;
 end;
@@ -799,7 +821,7 @@ end;
         <span class="label">18. RoPE Calculus (Complex Manifold Rotation)</span>
         $$f_q(x_m, m) = (W_q x_m) e^{im\theta}$$
         <p class="description">Modern models use complex rotations instead of sine/cosine addition. Explains how the model knows "where" without losing "what."</p>
-
+        
         <div class="symbol-key">
             <div class="symbol-key-title">Symbol Key:</div>
             <div class="symbol-item">f<sub>q</sub>(x<sub>m</sub>, m) = position-encoded query vector</div>
@@ -833,7 +855,7 @@ begin
 end;
 
 { Apply RoPE to a vector pair (complex rotation) }
-procedure ApplyRoPEComplex(var x: array of Real;
+procedure ApplyRoPEComplex(var x: array of Real; 
                            position: Integer;
                            dim: Integer);
 var
@@ -848,28 +870,1481 @@ begin
     { Compute rotation frequency for this dimension }
     freq := Power(10000.0, -2.0 * i / dim);
     theta := position * freq;
-
+    
     { Create rotation operator e^(imθ) }
     rotation := ComplexExp(theta);
-
+    
     { Treat (x[i], x[i+1]) as complex number }
     vecComplex.re := x[i];
     vecComplex.im := x[i+1];
-
+    
     { Apply complex rotation }
     result := ComplexMul(vecComplex, rotation);
-
+    
     { Store back to vector }
     x[i]   := result.re;
     x[i+1] := result.im;
-
+    
     i := i + 2;
   end;
 end;
 
+{ The flex: Most devs just call the library }
+{ You can explain the complex manifold rotation }
+{ happening inside the Glassbox }
+
 { Key insight: Dot product after rotation naturally }
 { encodes relative distance between positions }
 { This is why RoPE > absolute position embeddings }</code></pre>
+        
+        <div class="network-tags">
+            <span class="network-tag tag-transformer">Transformer</span>
+        </div>
+    </div>
+
+    <h2>Phase 6: Multi-Layer Perceptron (MLP)</h2>
+
+    <div class="equation-card">
+        <span class="label">19. Affine Transformation (MLP Core)</span>
+        $$y = \sigma(Wx + b)$$
+        <p class="description">The fundamental building block of MLPs - linear transformation followed by non-linearity.</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">y = output vector after activation</div>
+            <div class="symbol-item">W = weight matrix (learnable parameters)</div>
+            <div class="symbol-item">x = input vector</div>
+            <div class="symbol-item">b = bias vector (offset/intercept)</div>
+            <div class="symbol-item">σ = activation function (ReLU, Sigmoid, GELU, etc.)</div>
+        </div>
+
+        <pre><code>{ Affine transformation with activation }
+function MLPLayer(x, b: array of Real;
+                  W: array of array of Real;
+                  inputDim, outputDim: Integer;
+                  activation: ActivationType): array of Real;
+var
+  i, j: Integer;
+  linear, result: array of Real;
+begin
+  SetLength(linear, outputDim);
+  SetLength(result, outputDim);
+  
+  { Compute Wx + b (linear transformation) }
+  for i := 0 to outputDim-1 do
+  begin
+    linear[i] := b[i];  { Start with bias }
+    for j := 0 to inputDim-1 do
+      linear[i] := linear[i] + W[i,j] * x[j];
+  end;
+  
+  { Apply activation function }
+  for i := 0 to outputDim-1 do
+  begin
+    case activation of
+      ReLU:    result[i] := Max(0.0, linear[i]);
+      Sigmoid: result[i] := 1.0 / (1.0 + Exp(-linear[i]));
+      GELU:    result[i] := GELU(linear[i]);  { From Eq 8 }
+      Linear:  result[i] := linear[i];
+    end;
+  end;
+  
+  MLPLayer := result;
+end;
+
+{ MLP cross-references: }
+{ Uses Eq 1 (Softmax) for output layer }
+{ Uses Eq 2 (Cross-Entropy) for classification loss }
+{ Uses Eq 3 (SGD) and Eq 4 (Chain Rule) for training }
+{ Can use Eq 8 (GELU) as activation }
+{ Can apply Eq 13 (Quantization) to weights }</code></pre>
+        
+        <div class="network-tags">
+            <span class="network-tag tag-mlp">MLP</span>
+            <span class="network-tag tag-all">Universal</span>
+        </div>
+    </div>
+
+    <h2>Phase 7: Recurrent Neural Networks (RNN)</h2>
+
+    <div class="equation-card">
+        <span class="label">20. Recurrent Hidden State Transition</span>
+        $$h_t = \sigma(W_{hh}h_{t-1} + W_{xh}x_t + b_h)$$
+        <p class="description">How RNNs maintain memory - the current state depends on previous state and current input.</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">h<sub>t</sub> = hidden state at time t (current memory)</div>
+            <div class="symbol-item">h<sub>t-1</sub> = hidden state at time t-1 (previous memory)</div>
+            <div class="symbol-item">W<sub>hh</sub> = recurrent weight matrix (memory influence)</div>
+            <div class="symbol-item">W<sub>xh</sub> = input weight matrix (new data influence)</div>
+            <div class="symbol-item">x<sub>t</sub> = input vector at time t</div>
+            <div class="symbol-item">b<sub>h</sub> = bias vector for hidden state</div>
+            <div class="symbol-item">σ = activation (typically Tanh for RNNs)</div>
+        </div>
+
+        <pre><code>{ Compute next hidden state }
+function RNNStep(x_t, h_prev, b_h: array of Real;
+                 W_xh, W_hh: array of array of Real;
+                 inputDim, hiddenDim: Integer): array of Real;
+var
+  i, j: Integer;
+  linear, h_t: array of Real;
+begin
+  SetLength(linear, hiddenDim);
+  SetLength(h_t, hiddenDim);
+  
+  { Compute W_hh * h_{t-1} + W_xh * x_t + b_h }
+  for i := 0 to hiddenDim-1 do
+  begin
+    linear[i] := b_h[i];
+    
+    { Add recurrent contribution W_hh * h_{t-1} }
+    for j := 0 to hiddenDim-1 do
+      linear[i] := linear[i] + W_hh[i,j] * h_prev[j];
+    
+    { Add input contribution W_xh * x_t }
+    for j := 0 to inputDim-1 do
+      linear[i] := linear[i] + W_xh[i,j] * x_t[j];
+  end;
+  
+  { Apply activation (Tanh is standard for RNNs) }
+  for i := 0 to hiddenDim-1 do
+    h_t[i] := Tanh(linear[i]);
+  
+  RNNStep := h_t;
+end;
+
+{ RNN cross-references: }
+{ Uses Eq 3 (SGD) but applied across all time steps }
+{ Uses Eq 4 (Chain Rule) extended to BPTT (Backprop Through Time) }
+{ Can use Eq 8 (GELU) instead of Tanh }
+{ Eq 17 (Memory Bottleneck) critical - must store all h_t for backprop }</code></pre>
+        
+        <div class="network-tags">
+            <span class="network-tag tag-rnn">RNN</span>
+        </div>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">21. RNN Output (Readout Layer)</span>
+        $$y_t = W_{hy}h_t + b_y$$
+        <p class="description">Maps internal hidden state to actual output predictions at each time step.</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">y<sub>t</sub> = output at time t (logits or predictions)</div>
+            <div class="symbol-item">W<sub>hy</sub> = output weight matrix</div>
+            <div class="symbol-item">h<sub>t</sub> = hidden state at time t</div>
+            <div class="symbol-item">b<sub>y</sub> = output bias vector</div>
+        </div>
+
+        <pre><code>{ Compute output from hidden state }
+function RNNOutput(h_t, b_y: array of Real;
+                   W_hy: array of array of Real;
+                   hiddenDim, outputDim: Integer): array of Real;
+var
+  i, j: Integer;
+  y_t: array of Real;
+begin
+  SetLength(y_t, outputDim);
+  
+  { Compute W_hy * h_t + b_y }
+  for i := 0 to outputDim-1 do
+  begin
+    y_t[i] := b_y[i];
+    for j := 0 to hiddenDim-1 do
+      y_t[i] := y_t[i] + W_hy[i,j] * h_t[j];
+  end;
+  
+  RNNOutput := y_t;
+end;
+
+{ Complete RNN forward pass }
+procedure RNNForward(inputs: array of array of Real;
+                     seqLength: Integer);
+var
+  t: Integer;
+  h_t, y_t: array of Real;
+begin
+  { Initialize hidden state to zeros }
+  InitializeZeros(h_t, hiddenDim);
+  
+  { Process sequence }
+  for t := 0 to seqLength-1 do
+  begin
+    h_t := RNNStep(inputs[t], h_t, b_h, W_xh, W_hh, inputDim, hiddenDim);
+    y_t := RNNOutput(h_t, b_y, W_hy, hiddenDim, outputDim);
+    { Store or process y_t }
+  end;
+end;</code></pre>
+        
+        <div class="network-tags">
+            <span class="network-tag tag-rnn">RNN</span>
+        </div>
+    </div>
+
+    <h2>Phase 8: Graph Neural Networks (GNN)</h2>
+
+    <div class="equation-card">
+        <span class="label">22. Message Function (Node Communication)</span>
+        $$m_{ij}^{(k)} = \phi^{(k)}(h_i^{(k-1)}, h_j^{(k-1)}, e_{ij})$$
+        <p class="description">How nodes send information to their neighbors in a graph.</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">m<sub>ij</sub> = message from neighbor j to node i</div>
+            <div class="symbol-item">k = current layer index</div>
+            <div class="symbol-item">φ = learnable message function (often MLP)</div>
+            <div class="symbol-item">h<sub>i</sub> = embedding of target node i</div>
+            <div class="symbol-item">h<sub>j</sub> = embedding of neighbor node j</div>
+            <div class="symbol-item">e<sub>ij</sub> = optional edge features</div>
+        </div>
+
+        <pre><code>{ Compute message from neighbor j to node i }
+function ComputeMessage(h_i, h_j, e_ij: array of Real;
+                        W_msg: array of array of Real;
+                        embedDim: Integer): array of Real;
+var
+  i, j: Integer;
+  concat, message: array of Real;
+  concatDim: Integer;
+begin
+  { Concatenate [h_i, h_j, e_ij] }
+  concatDim := embedDim * 2 + Length(e_ij);
+  SetLength(concat, concatDim);
+  
+  for i := 0 to embedDim-1 do
+  begin
+    concat[i] := h_i[i];
+    concat[embedDim + i] := h_j[i];
+  end;
+  
+  for i := 0 to Length(e_ij)-1 do
+    concat[embedDim * 2 + i] := e_ij[i];
+  
+  { Apply learnable transformation φ (simple MLP) }
+  SetLength(message, embedDim);
+  for i := 0 to embedDim-1 do
+  begin
+    message[i] := 0.0;
+    for j := 0 to concatDim-1 do
+      message[i] := message[i] + W_msg[i,j] * concat[j];
+  end;
+  
+  { Apply activation }
+  for i := 0 to embedDim-1 do
+    message[i] := ReLU(message[i]);
+  
+  ComputeMessage := message;
+end;
+
+{ GNN cross-references: }
+{ Can use Eq 5 (Scaled Dot-Product) for GAT attention weights }
+{ Uses Eq 9 (Cosine Similarity) to measure node similarity }</code></pre>
+        
+        <div class="network-tags">
+            <span class="network-tag tag-gnn">GNN</span>
+        </div>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">23. Aggregation (Permutation Invariant)</span>
+        $$M_i^{(k)} = \bigoplus_{j \in \mathcal{N}(i)} m_{ij}^{(k)}$$
+        <p class="description">Combines messages from all neighbors using a permutation-invariant operation.</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">M<sub>i</sub> = aggregated message for node i</div>
+            <div class="symbol-item">⊕ = permutation-invariant operator (Sum, Mean, Max)</div>
+            <div class="symbol-item">N(i) = set of neighbor nodes connected to i</div>
+            <div class="symbol-item">m<sub>ij</sub> = individual message from neighbor j</div>
+        </div>
+
+        <pre><code>{ Aggregate messages using Sum, Mean, or Max }
+type
+  AggregationType = (Sum, Mean, Max);
+
+function AggregateMessages(messages: array of array of Real;
+                           numMessages, embedDim: Integer;
+                           aggType: AggregationType): array of Real;
+var
+  i, j: Integer;
+  aggregated: array of Real;
+begin
+  SetLength(aggregated, embedDim);
+  
+  case aggType of
+    Sum:
+    begin
+      { Sum aggregation }
+      for i := 0 to embedDim-1 do
+      begin
+        aggregated[i] := 0.0;
+        for j := 0 to numMessages-1 do
+          aggregated[i] := aggregated[i] + messages[j][i];
+      end;
+    end;
+    
+    Mean:
+    begin
+      { Mean aggregation }
+      for i := 0 to embedDim-1 do
+      begin
+        aggregated[i] := 0.0;
+        for j := 0 to numMessages-1 do
+          aggregated[i] := aggregated[i] + messages[j][i];
+        if numMessages > 0 then
+          aggregated[i] := aggregated[i] / numMessages;
+      end;
+    end;
+    
+    Max:
+    begin
+      { Max aggregation }
+      for i := 0 to embedDim-1 do
+      begin
+        aggregated[i] := messages[0][i];
+        for j := 1 to numMessages-1 do
+          if messages[j][i] > aggregated[i] then
+            aggregated[i] := messages[j][i];
+      end;
+    end;
+  end;
+  
+  AggregateMessages := aggregated;
+end;
+
+{ Permutation invariance is critical: }
+{ Same output regardless of neighbor ordering }</code></pre>
+        
+        <div class="network-tags">
+            <span class="network-tag tag-gnn">GNN</span>
+        </div>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">24. Node Update (Combine Old and New)</span>
+        $$h_i^{(k)} = \gamma^{(k)}(h_i^{(k-1)}, M_i^{(k)})$$
+        <p class="description">Updates node embedding by combining its previous state with aggregated neighbor messages.</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">h<sub>i</sub><sup>(k)</sup> = updated node embedding at layer k</div>
+            <div class="symbol-item">h<sub>i</sub><sup>(k-1)</sup> = previous node embedding</div>
+            <div class="symbol-item">γ = update function (often MLP or GRU-like)</div>
+            <div class="symbol-item">M<sub>i</sub> = aggregated message from neighbors</div>
+        </div>
+
+        <pre><code>{ Update node embedding }
+function UpdateNode(h_old, M_agg: array of Real;
+                    W_update: array of array of Real;
+                    embedDim: Integer): array of Real;
+var
+  i, j: Integer;
+  concat, h_new: array of Real;
+begin
+  { Concatenate [h_old, M_agg] }
+  SetLength(concat, embedDim * 2);
+  for i := 0 to embedDim-1 do
+  begin
+    concat[i] := h_old[i];
+    concat[embedDim + i] := M_agg[i];
+  end;
+  
+  { Apply update function γ }
+  SetLength(h_new, embedDim);
+  for i := 0 to embedDim-1 do
+  begin
+    h_new[i] := 0.0;
+    for j := 0 to (embedDim * 2)-1 do
+      h_new[i] := h_new[i] + W_update[i,j] * concat[j];
+  end;
+  
+  { Apply activation }
+  for i := 0 to embedDim-1 do
+    h_new[i] := ReLU(h_new[i]);
+  
+  UpdateNode := h_new;
+end;
+
+{ Complete GNN layer }
+procedure GNNLayer(var nodeEmbeddings: array of array of Real;
+                   adjacencyList: array of array of Integer;
+                   numNodes: Integer);
+var
+  i, j, neighbor: Integer;
+  messages: array of array of Real;
+  M_agg: array of Real;
+begin
+  for i := 0 to numNodes-1 do
+  begin
+    { Collect messages from neighbors }
+    SetLength(messages, Length(adjacencyList[i]));
+    for j := 0 to Length(adjacencyList[i])-1 do
+    begin
+      neighbor := adjacencyList[i][j];
+      messages[j] := ComputeMessage(nodeEmbeddings[i], 
+                                     nodeEmbeddings[neighbor],
+                                     emptyEdgeFeatures,
+                                     W_msg, embedDim);
+    end;
+    
+    { Aggregate messages }
+    M_agg := AggregateMessages(messages, Length(messages), embedDim, Sum);
+    
+    { Update node embedding }
+    nodeEmbeddings[i] := UpdateNode(nodeEmbeddings[i], M_agg, W_update, embedDim);
+  end;
+end;
+
+{ GNN cross-references: }
+{ Uses Eq 6 (Layer Norm) to prevent oversmoothing in deep GNNs }
+{ Uses Eq 13 (Quantization) for large graphs on limited VRAM }
+{ Eq 17 (Memory Bottleneck) = adjacency matrix + all messages }</code></pre>
+        
+        <div class="network-tags">
+            <span class="network-tag tag-gnn">GNN</span>
+        </div>
+    </div>
+
+    <h2>Phase 9: Convolutional Neural Networks (CNN)</h2>
+
+    <div class="equation-card">
+        <span class="label">25. 2D Convolution Operation</span>
+        $$S(i,j) = (I * K)(i,j) = \sum_{m=0}^{M-1} \sum_{n=0}^{N-1} I(i \cdot s + m, j \cdot s + n) \cdot K(m,n)$$
+        <p class="description">The spatial feature extraction operation - slides a kernel over the input to detect patterns.</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">S(i,j) = output value at position (i,j)</div>
+            <div class="symbol-item">I = input image/feature map</div>
+            <div class="symbol-item">K = kernel/filter of size M×N</div>
+            <div class="symbol-item">s = stride (step size of sliding window)</div>
+            <div class="symbol-item">M, N = kernel height and width</div>
+            <div class="symbol-item">* = convolution operator</div>
+        </div>
+
+        <pre><code>{ 2D Convolution }
+function Conv2D(input: array of array of Real;
+                kernel: array of array of Real;
+                inputH, inputW, kernelSize, stride: Integer): array of array of Real;
+var
+  i, j, m, n: Integer;
+  outputH, outputW: Integer;
+  output: array of array of Real;
+  sum: Real;
+begin
+  { Calculate output dimensions }
+  outputH := ((inputH - kernelSize) div stride) + 1;
+  outputW := ((inputW - kernelSize) div stride) + 1;
+  
+  SetLength(output, outputH, outputW);
+  
+  { Slide kernel over input }
+  for i := 0 to outputH-1 do
+  begin
+    for j := 0 to outputW-1 do
+    begin
+      sum := 0.0;
+      
+      { Apply kernel at position (i*stride, j*stride) }
+      for m := 0 to kernelSize-1 do
+        for n := 0 to kernelSize-1 do
+          sum := sum + input[i*stride + m, j*stride + n] * kernel[m,n];
+      
+      output[i,j] := sum;
+    end;
+  end;
+  
+  Conv2D := output;
+end;
+
+{ CNN cross-references: }
+{ Uses Eq 4 (Chain Rule) for transposed convolution gradients }
+{ Can use Eq 8 (GELU) or ReLU as activation }
+{ Uses Eq 13 (Quantization) - CNNs compress well due to weight sharing }</code></pre>
+        
+        <div class="network-tags">
+            <span class="network-tag tag-cnn">CNN</span>
+        </div>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">26. Output Dimension Calculation</span>
+        $$O = \left\lfloor \frac{I - F + 2P}{S} \right\rfloor + 1$$
+        <p class="description">Critical equation for VRAM allocation - calculates output size before running convolution.</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">O = output dimension (width or height)</div>
+            <div class="symbol-item">I = input dimension</div>
+            <div class="symbol-item">F = filter/kernel size</div>
+            <div class="symbol-item">P = padding (pixels added to border)</div>
+            <div class="symbol-item">S = stride (step size)</div>
+            <div class="symbol-item">⌊ ⌋ = floor function (round down)</div>
+        </div>
+
+        <pre><code>{ Calculate output dimension }
+function CalculateOutputDim(inputDim, filterSize, padding, stride: Integer): Integer;
+begin
+  CalculateOutputDim := ((inputDim - filterSize + 2*padding) div stride) + 1;
+end;
+
+{ Verify convolution is valid (no out-of-bounds access) }
+function IsValidConvolution(inputDim, filterSize, padding, stride: Integer): Boolean;
+var
+  outputDim: Integer;
+begin
+  outputDim := CalculateOutputDim(inputDim, filterSize, padding, stride);
+  IsValidConvolution := (outputDim > 0) and 
+                        ((inputDim + 2*padding - filterSize) mod stride = 0);
+end;
+
+{ Calculate total VRAM for feature maps }
+function CalculateCNNMemory(batchSize, channels, height, width: Integer): Int64;
+begin
+  { Memory = Batch × Channels × Height × Width × bytes_per_value }
+  CalculateCNNMemory := Int64(batchSize) * channels * height * width * 4;  { 4 bytes for FP32 }
+end;
+
+{ Example: 224x224 input, 3x3 kernel, padding=1, stride=1 }
+{ Output = ⌊(224 - 3 + 2*1) / 1⌋ + 1 = 224 }
+{ Same size maintained with padding=1 }
+
+{ Example: 224x224 input, 3x3 kernel, padding=0, stride=2 }
+{ Output = ⌊(224 - 3 + 0) / 2⌋ + 1 = 111 }
+{ Downsampled by factor of ~2 }
+
+{ This is the "Judo" equation - prevents out-of-bounds memory access }</code></pre>
+        
+        <div class="network-tags">
+            <span class="network-tag tag-cnn">CNN</span>
+        </div>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">27. Max Pooling (Downsampling)</span>
+        $$P(i,j) = \max_{m,n \in \text{window}} I(i \cdot s + m, j \cdot s + n)$$
+        <p class="description">Spatial downsampling with no learnable weights - selects maximum value in each region.</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">P(i,j) = pooled output at position (i,j)</div>
+            <div class="symbol-item">I = input feature map</div>
+            <div class="symbol-item">s = stride (usually equals pool size)</div>
+            <div class="symbol-item">window = pooling window size (typically 2×2)</div>
+            <div class="symbol-item">max = maximum value in window</div>
+        </div>
+
+        <pre><code>{ Max Pooling 2D }
+function MaxPool2D(input: array of array of Real;
+                   inputH, inputW, poolSize, stride: Integer): array of array of Real;
+var
+  i, j, m, n: Integer;
+  outputH, outputW: Integer;
+  output: array of array of Real;
+  maxVal: Real;
+begin
+  { Calculate output dimensions }
+  outputH := ((inputH - poolSize) div stride) + 1;
+  outputW := ((inputW - poolSize) div stride) + 1;
+  
+  SetLength(output, outputH, outputW);
+  
+  { Slide pooling window over input }
+  for i := 0 to outputH-1 do
+  begin
+    for j := 0 to outputW-1 do
+    begin
+      { Find maximum in window }
+      maxVal := input[i*stride, j*stride];
+      
+      for m := 0 to poolSize-1 do
+        for n := 0 to poolSize-1 do
+          if input[i*stride + m, j*stride + n] > maxVal then
+            maxVal := input[i*stride + m, j*stride + n];
+      
+      output[i,j] := maxVal;
+    end;
+  end;
+  
+  MaxPool2D := output;
+end;
+
+{ Average Pooling (alternative) }
+function AvgPool2D(input: array of array of Real;
+                   inputH, inputW, poolSize, stride: Integer): array of array of Real;
+var
+  i, j, m, n: Integer;
+  outputH, outputW: Integer;
+  output: array of array of Real;
+  sum: Real;
+  count: Integer;
+begin
+  outputH := ((inputH - poolSize) div stride) + 1;
+  outputW := ((inputW - poolSize) div stride) + 1;
+  SetLength(output, outputH, outputW);
+  
+  for i := 0 to outputH-1 do
+  begin
+    for j := 0 to outputW-1 do
+    begin
+      sum := 0.0;
+      count := 0;
+      
+      for m := 0 to poolSize-1 do
+        for n := 0 to poolSize-1 do
+        begin
+          sum := sum + input[i*stride + m, j*stride + n];
+          count := count + 1;
+        end;
+      
+      output[i,j] := sum / count;
+    end;
+  end;
+  
+  AvgPool2D := output;
+end;
+
+{ No learnable parameters in pooling }
+{ Reduces spatial dimensions while preserving channels }
+{ Typical: 2×2 pooling with stride 2 halves width and height }</code></pre>
+        
+        <div class="network-tags">
+            <span class="network-tag tag-cnn">CNN</span>
+        </div>
+    </div>
+
+    <h2>Phase 10: Random Forest</h2>
+
+    <div class="equation-card">
+        <span class="label">28. Gini Impurity (Split Metric)</span>
+        $$G = 1 - \sum_{i=1}^{C} p_i^2$$
+        <p class="description">Measures how "mixed" the classes are at a node - used to determine best split.</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">G = Gini impurity (0 = pure, 0.5 = maximum impurity)</div>
+            <div class="symbol-item">p<sub>i</sub> = probability of class i at this node</div>
+            <div class="symbol-item">C = total number of classes</div>
+            <div class="symbol-item">Lower Gini = better split quality</div>
+        </div>
+
+        <pre><code>{ Calculate Gini Impurity }
+function GiniImpurity(classCounts: array of Integer; 
+                      numClasses, totalSamples: Integer): Real;
+var
+  i: Integer;
+  gini, p: Real;
+begin
+  gini := 1.0;
+  
+  for i := 0 to numClasses-1 do
+  begin
+    if totalSamples > 0 then
+    begin
+      p := classCounts[i] / totalSamples;
+      gini := gini - p * p;
+    end;
+  end;
+  
+  GiniImpurity := gini;
+end;
+
+{ Find best split using Gini }
+procedure FindBestSplit(data: array of array of Real;
+                        labels: array of Integer;
+                        numSamples, numFeatures: Integer;
+                        var bestFeature, bestThreshold: Integer;
+                        var bestGini: Real);
+var
+  f, s: Integer;
+  threshold: Real;
+  leftCounts, rightCounts: array of Integer;
+  leftGini, rightGini, weightedGini: Real;
+  leftTotal, rightTotal: Integer;
+begin
+  bestGini := 1.0;  { Worst possible Gini }
+  
+  { Try each feature }
+  for f := 0 to numFeatures-1 do
+  begin
+    { Try different threshold values }
+    for s := 0 to numSamples-1 do
+    begin
+      threshold := data[s][f];
+      
+      { Split data and count classes }
+      CountClassSplit(data, labels, f, threshold, 
+                      leftCounts, rightCounts, 
+                      leftTotal, rightTotal);
+      
+      { Calculate weighted Gini }
+      leftGini := GiniImpurity(leftCounts, numClasses, leftTotal);
+      rightGini := GiniImpurity(rightCounts, numClasses, rightTotal);
+      weightedGini := (leftTotal * leftGini + rightTotal * rightGini) / numSamples;
+      
+      { Update best split if this is better }
+      if weightedGini < bestGini then
+      begin
+        bestGini := weightedGini;
+        bestFeature := f;
+        bestThreshold := s;
+      end;
+    end;
+  end;
+end;
+
+{ Gini = 0: All samples same class (pure node) }
+{ Gini = 0.5: Maximum impurity (binary classification, 50/50 split) }</code></pre>
+        
+        <div class="network-tags">
+            <span class="network-tag tag-rf">Random Forest</span>
+        </div>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">29. Information Gain (Alternative Split Metric)</span>
+        $$\text{Gain} = H(\text{parent}) - \sum_{j} \frac{N_j}{N} H(\text{child}_j)$$
+        <p class="description">Measures reduction in entropy (disorder) after a split - alternative to Gini impurity.</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">Gain = information gain from split</div>
+            <div class="symbol-item">H = entropy = -Σp<sub>i</sub>log₂(p<sub>i</sub>)</div>
+            <div class="symbol-item">N = total samples in parent</div>
+            <div class="symbol-item">N<sub>j</sub> = samples in child j</div>
+            <div class="symbol-item">Higher gain = better split</div>
+        </div>
+
+        <pre><code>{ Calculate Entropy }
+function Entropy(classCounts: array of Integer;
+                 numClasses, totalSamples: Integer): Real;
+var
+  i: Integer;
+  entropy, p: Real;
+begin
+  entropy := 0.0;
+  
+  for i := 0 to numClasses-1 do
+  begin
+    if (totalSamples > 0) and (classCounts[i] > 0) then
+    begin
+      p := classCounts[i] / totalSamples;
+      entropy := entropy - p * Log2(p);
+    end;
+  end;
+  
+  Entropy := entropy;
+end;
+
+{ Calculate Information Gain }
+function InformationGain(parentCounts: array of Integer;
+                         leftCounts, rightCounts: array of Integer;
+                         numClasses: Integer): Real;
+var
+  parentTotal, leftTotal, rightTotal: Integer;
+  parentEntropy, leftEntropy, rightEntropy: Real;
+  weightedChildEntropy, gain: Real;
+  i: Integer;
+begin
+  { Count totals }
+  parentTotal := 0;
+  leftTotal := 0;
+  rightTotal := 0;
+  
+  for i := 0 to numClasses-1 do
+  begin
+    parentTotal := parentTotal + parentCounts[i];
+    leftTotal := leftTotal + leftCounts[i];
+    rightTotal := rightTotal + rightCounts[i];
+  end;
+  
+  { Calculate entropies }
+  parentEntropy := Entropy(parentCounts, numClasses, parentTotal);
+  leftEntropy := Entropy(leftCounts, numClasses, leftTotal);
+  rightEntropy := Entropy(rightCounts, numClasses, rightTotal);
+  
+  { Weighted child entropy }
+  weightedChildEntropy := (leftTotal * leftEntropy + rightTotal * rightEntropy) / parentTotal;
+  
+  { Information gain }
+  gain := parentEntropy - weightedChildEntropy;
+  
+  InformationGain := gain;
+end;
+
+{ Gini vs Entropy: }
+{ - Gini: Faster to compute (no logarithm) }
+{ - Entropy: More theoretically grounded (information theory) }
+{ - Both produce similar trees in practice }
+{ - Gini range: [0, 0.5], Entropy range: [0, log₂(C)] }</code></pre>
+        
+        <div class="network-tags">
+            <span class="network-tag tag-rf">Random Forest</span>
+        </div>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">30. Forest Ensemble (Majority Vote)</span>
+        $$\hat{y} = \text{mode}\{f_1(x), f_2(x), \ldots, f_B(x)\}$$
+        <p class="description">Combines predictions from all trees - majority vote for classification, mean for regression.</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">ŷ = final ensemble prediction</div>
+            <div class="symbol-item">f<sub>b</sub>(x) = prediction of tree b</div>
+            <div class="symbol-item">B = total number of trees in forest</div>
+            <div class="symbol-item">mode = most common value (classification)</div>
+            <div class="symbol-item">For regression: use mean instead of mode</div>
+        </div>
+
+        <pre><code>{ Predict with Random Forest (Classification) }
+function ForestPredictClassification(x: array of Real;
+                                     trees: array of DecisionTree;
+                                     numTrees, numClasses: Integer): Integer;
+var
+  i, prediction: Integer;
+  votes: array of Integer;
+  maxVotes, maxClass: Integer;
+begin
+  SetLength(votes, numClasses);
+  
+  { Initialize votes }
+  for i := 0 to numClasses-1 do
+    votes[i] := 0;
+  
+  { Collect predictions from all trees }
+  for i := 0 to numTrees-1 do
+  begin
+    prediction := TreePredict(trees[i], x);
+    votes[prediction] := votes[prediction] + 1;
+  end;
+  
+  { Find class with most votes }
+  maxVotes := votes[0];
+  maxClass := 0;
+  for i := 1 to numClasses-1 do
+  begin
+    if votes[i] > maxVotes then
+    begin
+      maxVotes := votes[i];
+      maxClass := i;
+    end;
+  end;
+  
+  ForestPredictClassification := maxClass;
+end;
+
+{ Predict with Random Forest (Regression) }
+function ForestPredictRegression(x: array of Real;
+                                 trees: array of DecisionTree;
+                                 numTrees: Integer): Real;
+var
+  i: Integer;
+  sum, prediction: Real;
+begin
+  sum := 0.0;
+  
+  { Sum predictions from all trees }
+  for i := 0 to numTrees-1 do
+  begin
+    prediction := TreePredictRegression(trees[i], x);
+    sum := sum + prediction;
+  end;
+  
+  { Return mean }
+  ForestPredictRegression := sum / numTrees;
+end;
+
+{ Why ensembles work: }
+{ - Each tree trained on random subset (bootstrap) }
+{ - Each split considers random feature subset }
+{ - Diversity reduces overfitting }
+{ - Majority vote smooths individual tree errors }
+
+{ Random Forest cross-references: }
+{ Uses Eq 9 (Cosine Similarity) to measure tree diversity }
+{ Can use Eq 13 (Quantization) to compress split thresholds }
+{ Eq 17 (Memory Bottleneck) = O(Trees × Depth) }</code></pre>
+        
+        <div class="network-tags">
+            <span class="network-tag tag-rf">Random Forest</span>
+        </div>
+    </div>
+
+    <h2>Phase 11: Generative Adversarial Networks (GAN)</h2>
+
+    <div class="equation-card">
+        <span class="label">31. Minimax GAN Loss (Adversarial Training)</span>
+        $$\min_G \max_D V(D,G) = \mathbb{E}_{x \sim p_{data}}[\log D(x)] + \mathbb{E}_{z \sim p_z}[\log(1 - D(G(z)))]$$
+        <p class="description">The core adversarial game: Generator tries to fool Discriminator, Discriminator learns to spot fakes.</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">G = Generator network (creates fake data)</div>
+            <div class="symbol-item">D = Discriminator network (judges real vs fake)</div>
+            <div class="symbol-item">x = real data sample from training set</div>
+            <div class="symbol-item">z = random noise vector (latent space)</div>
+            <div class="symbol-item">p<sub>data</sub> = true data distribution</div>
+            <div class="symbol-item">p<sub>z</sub> = noise prior (usually Gaussian)</div>
+            <div class="symbol-item">D(x) = probability that x is real (0-1)</div>
+            <div class="symbol-item">G(z) = fake sample generated from noise z</div>
+            <div class="symbol-item">𝔼 = expected value (average over distribution)</div>
+        </div>
+
+        <pre><code>{ GAN Training - Two-Player Game }
+procedure TrainGANStep(var G: TGenerator; var D: TDiscriminator;
+                       realData: array of Real; batchSize: Integer);
+var
+  i: Integer;
+  z: array of Real;
+  fakeData: array of Real;
+  realLabel, fakeLabel: array of Real;
+  d_loss_real, d_loss_fake, d_loss, g_loss: Real;
+begin
+  { Step 1: Train Discriminator }
+  { Goal: Maximize log(D(x)) + log(1 - D(G(z))) }
+  
+  { Real data should be classified as 1 }
+  SetLength(realLabel, batchSize);
+  for i := 0 to batchSize-1 do
+    realLabel[i] := 1.0;
+  
+  { Forward real data through discriminator }
+  d_loss_real := D.ForwardAndLoss(realData, realLabel);
+  D.Backward();
+  
+  { Generate fake data from noise }
+  SetLength(z, G.latentDim);
+  for i := 0 to G.latentDim-1 do
+    z[i] := RandomGaussian(0, 1);
+  
+  fakeData := G.Forward(z);
+  
+  { Fake data should be classified as 0 }
+  SetLength(fakeLabel, batchSize);
+  for i := 0 to batchSize-1 do
+    fakeLabel[i] := 0.0;
+  
+  { Forward fake data through discriminator }
+  d_loss_fake := D.ForwardAndLoss(fakeData, fakeLabel);
+  D.Backward();
+  
+  { Total discriminator loss }
+  d_loss := d_loss_real + d_loss_fake;
+  D.UpdateWeights();
+  
+  { Step 2: Train Generator }
+  { Goal: Minimize log(1 - D(G(z))) = Maximize log(D(G(z))) }
+  
+  { Generate new fake data }
+  for i := 0 to G.latentDim-1 do
+    z[i] := RandomGaussian(0, 1);
+  
+  fakeData := G.Forward(z);
+  
+  { Generator wants discriminator to classify fakes as real (1) }
+  for i := 0 to batchSize-1 do
+    fakeLabel[i] := 1.0;  { Flip labels for generator training }
+  
+  { Forward fake data, backprop through both G and D }
+  g_loss := D.ForwardAndLoss(fakeData, fakeLabel);
+  D.BackwardToGenerator(G);
+  G.UpdateWeights();
+  
+  WriteLn('D_loss: ', d_loss:0:4, ' G_loss: ', g_loss:0:4);
+end;
+
+{ Key insight: Alternating optimization }
+{ D tries to separate real from fake }
+{ G tries to make fakes indistinguishable from real }
+{ At equilibrium: D(x) = 0.5 everywhere (can't tell difference) }
+
+{ GAN cross-references: }
+{ Uses Eq 1 (Softmax) for D's binary classification output }
+{ Uses Eq 2 (Cross-Entropy) for both D and G losses }
+{ Uses Eq 3 (SGD) for both networks, often with Adam }
+{ Uses Eq 4 (Chain Rule) for backprop through G->D }</code></pre>
+        
+        <div class="network-tags">
+            <span class="network-tag tag-gan">GAN</span>
+        </div>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">32. Wasserstein GAN Loss (Improved Stability)</span>
+        $$\min_G \max_{D \in \mathcal{D}} \mathbb{E}_{x \sim p_{data}}[D(x)] - \mathbb{E}_{z \sim p_z}[D(G(z))]$$
+        <p class="description">More stable training by using Earth Mover's Distance instead of JS divergence.</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">D ∈ 𝒟 = Discriminator constrained to 1-Lipschitz functions</div>
+            <div class="symbol-item">Wasserstein distance = minimum cost to transform one distribution into another</div>
+            <div class="symbol-item">No log = no vanishing gradients (major improvement)</div>
+            <div class="symbol-item">D(x) = "realness score" (not probability, can be any real number)</div>
+        </div>
+
+        <pre><code>{ Wasserstein GAN with Gradient Penalty (WGAN-GP) }
+procedure TrainWGANStep(var G: TGenerator; var D: TCritic;
+                        realData: array of Real; lambda: Real);
+var
+  i: Integer;
+  z, fakeData, interpolated: array of Real;
+  alpha: Real;
+  d_real, d_fake, d_interp: Real;
+  gradPenalty, d_loss, g_loss: Real;
+begin
+  { Step 1: Train Critic (Discriminator) }
+  
+  { Score real data (want high positive scores) }
+  d_real := Mean(D.Forward(realData));
+  
+  { Generate fake data }
+  z := SampleNoise(G.latentDim);
+  fakeData := G.Forward(z);
+  
+  { Score fake data (want low/negative scores) }
+  d_fake := Mean(D.Forward(fakeData));
+  
+  { Wasserstein distance estimate }
+  d_loss := d_fake - d_real;  { Want to minimize this }
+  
+  { Gradient Penalty (enforces 1-Lipschitz constraint) }
+  alpha := Random;  { Random interpolation point }
+  for i := 0 to High(realData) do
+    interpolated[i] := alpha * realData[i] + (1 - alpha) * fakeData[i];
+  
+  d_interp := D.Forward(interpolated);
+  gradPenalty := lambda * GradientNormPenalty(D, interpolated);
+  
+  { Total critic loss }
+  d_loss := d_loss + gradPenalty;
+  D.Backward();
+  D.UpdateWeights();
+  
+  { Step 2: Train Generator }
+  z := SampleNoise(G.latentDim);
+  fakeData := G.Forward(z);
+  
+  { Generator wants high scores from critic }
+  g_loss := -Mean(D.Forward(fakeData));  { Negative because we maximize }
+  
+  D.BackwardToGenerator(G);
+  G.UpdateWeights();
+  
+  WriteLn('W_dist: ', -d_loss:0:4, ' G_loss: ', g_loss:0:4);
+end;
+
+function GradientNormPenalty(D: TCritic; x: array of Real): Real;
+var
+  gradients: array of Real;
+  gradNorm: Real;
+begin
+  { Compute gradients of D(x) with respect to x }
+  gradients := D.ComputeGradients(x);
+  
+  { Penalize deviation from norm=1 }
+  gradNorm := VectorNorm(gradients);
+  Result := Power(gradNorm - 1.0, 2);
+end;
+
+{ Why WGAN is better: }
+{ - No mode collapse (generator gets stuck making one type) }
+{ - Meaningful loss metric (correlates with sample quality) }
+{ - More stable training (no balancing D vs G carefully) }
+{ - Works with simple architectures }
+
+{ WGAN cross-references: }
+{ Still uses Eq 3 (SGD) but often with RMSprop instead of Adam }
+{ Uses Eq 4 (Chain Rule) for gradient penalty computation }
+{ Gradient penalty requires careful Eq 17 (Memory) management }</code></pre>
+        
+        <div class="network-tags">
+            <span class="network-tag tag-gan">GAN</span>
+        </div>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">33. Generator Loss (Non-Saturating)</span>
+        $$\mathcal{L}_G = -\mathbb{E}_{z \sim p_z}[\log D(G(z))]$$
+        <p class="description">Practical generator loss that avoids saturation when discriminator is too strong.</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">ℒ<sub>G</sub> = generator loss to minimize</div>
+            <div class="symbol-item">log D(G(z)) = log probability that fake is classified as real</div>
+            <div class="symbol-item">Negative sign = we want to maximize D(G(z))</div>
+            <div class="symbol-item">Non-saturating = provides better gradients than original formulation</div>
+        </div>
+
+        <pre><code>{ Generator Forward and Loss }
+function GeneratorLoss(G: TGenerator; D: TDiscriminator; 
+                       z: array of Real): Real;
+var
+  i: Integer;
+  fakeData: array of Real;
+  d_output: array of Real;
+  loss: Real;
+begin
+  { Generate fake data from noise }
+  fakeData := G.Forward(z);
+  
+  { Pass through discriminator }
+  d_output := D.Forward(fakeData);
+  
+  { Generator wants D(G(z)) to be close to 1 (real) }
+  { Using negative log makes gradients stronger when D is confident }
+  loss := 0.0;
+  for i := 0 to High(d_output) do
+  begin
+    { Clamp to avoid log(0) }
+    if d_output[i] < 1e-7 then d_output[i] := 1e-7;
+    if d_output[i] > 1 - 1e-7 then d_output[i] := 1 - 1e-7;
+    
+    loss := loss - Ln(d_output[i]);
+  end;
+  
+  Result := loss / Length(d_output);
+end;
+
+{ Alternative: Least Squares GAN (LSGAN) }
+function LSGANGeneratorLoss(G: TGenerator; D: TDiscriminator;
+                            z: array of Real): Real;
+var
+  fakeData, d_output: array of Real;
+  i: Integer;
+  loss: Real;
+begin
+  fakeData := G.Forward(z);
+  d_output := D.Forward(fakeData);
+  
+  { Want D(G(z)) = 1, so minimize (D(G(z)) - 1)² }
+  loss := 0.0;
+  for i := 0 to High(d_output) do
+    loss := loss + Power(d_output[i] - 1.0, 2);
+  
+  Result := loss / Length(d_output);
+end;
+
+{ Key insight: }
+{ Original: min_G log(1 - D(G(z))) saturates when D is confident }
+{ Non-saturating: max_G log(D(G(z))) provides strong gradients }
+{ LSGAN: Use L2 loss instead of log for even smoother gradients }</code></pre>
+        
+        <div class="network-tags">
+            <span class="network-tag tag-gan">GAN</span>
+        </div>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">34. Mode Collapse Detection (Diversity Metric)</span>
+        $$\text{Diversity} = \frac{1}{N^2} \sum_{i=1}^{N} \sum_{j=1}^{N} ||G(z_i) - G(z_j)||_2$$
+        <p class="description">Measure if generator is producing diverse outputs or stuck generating similar samples.</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">N = number of random samples to test</div>
+            <div class="symbol-item">z<sub>i</sub>, z<sub>j</sub> = different noise vectors</div>
+            <div class="symbol-item">G(z) = generated sample from noise z</div>
+            <div class="symbol-item">|| · ||₂ = L2 distance (Euclidean distance)</div>
+            <div class="symbol-item">High diversity = healthy GAN, Low diversity = mode collapse</div>
+        </div>
+
+        <pre><code>{ Measure GAN Output Diversity }
+function MeasureDiversity(G: TGenerator; numSamples: Integer): Real;
+var
+  i, j, k: Integer;
+  samples: array of array of Real;
+  z: array of Real;
+  totalDist, dist: Real;
+  count: Integer;
+begin
+  SetLength(samples, numSamples);
+  
+  { Generate samples from random noise }
+  for i := 0 to numSamples-1 do
+  begin
+    SetLength(z, G.latentDim);
+    for k := 0 to G.latentDim-1 do
+      z[k] := RandomGaussian(0, 1);
+    
+    samples[i] := G.Forward(z);
+  end;
+  
+  { Compute average pairwise distance }
+  totalDist := 0.0;
+  count := 0;
+  
+  for i := 0 to numSamples-1 do
+  begin
+    for j := i+1 to numSamples-1 do
+    begin
+      { L2 distance between samples }
+      dist := 0.0;
+      for k := 0 to High(samples[i]) do
+        dist := dist + Power(samples[i][k] - samples[j][k], 2);
+      dist := Sqrt(dist);
+      
+      totalDist := totalDist + dist;
+      Inc(count);
+    end;
+  end;
+  
+  if count > 0 then
+    Result := totalDist / count
+  else
+    Result := 0.0;
+end;
+
+{ Mode collapse indicators: }
+{ - Diversity drops suddenly during training }
+{ - Generated samples look very similar }
+{ - Different noise inputs produce nearly identical outputs }
+{ - Discriminator loss goes to zero (too easy to spot fakes) }
+
+{ Solutions to mode collapse: }
+{ 1. Use Wasserstein GAN (Eq 32) instead of vanilla GAN }
+{ 2. Add noise to discriminator inputs }
+{ 3. Use minibatch discrimination }
+{ 4. Feature matching (match statistics instead of fooling D) }
+{ 5. Unrolled GAN (optimize for future D states) }
+
+{ Diversity cross-references: }
+{ Uses Eq 10 (L2 Distance) for pairwise sample comparison }
+{ Can also use Eq 9 (Cosine Similarity) for high-dim data }
+{ Monitor alongside Eq 17 (Memory) to track sample storage }</code></pre>
+        
+        <div class="network-tags">
+            <span class="network-tag tag-gan">GAN</span>
+        </div>
+    </div>
+
+    <div class="equation-card">
+        <span class="label">35. Conditional GAN Loss (Controlled Generation)</span>
+        $$\min_G \max_D V(D,G) = \mathbb{E}_{x \sim p_{data}}[\log D(x|y)] + \mathbb{E}_{z \sim p_z}[\log(1 - D(G(z|y)|y))]$$
+        <p class="description">Generate samples conditioned on labels - e.g., "generate a cat" or "generate digit 7".</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Symbol Key:</div>
+            <div class="symbol-item">y = condition/label (e.g., class label, text description)</div>
+            <div class="symbol-item">D(x|y) = "is x real given it should be class y?"</div>
+            <div class="symbol-item">G(z|y) = "generate sample of class y from noise z"</div>
+            <div class="symbol-item">Conditioning allows controlled generation</div>
+        </div>
+
+        <pre><code>{ Conditional GAN - Generator and Discriminator }
+function ConditionalGenerate(G: TGenerator; z, y: array of Real): array of Real;
+var
+  i: Integer;
+  concatenated: array of Real;
+begin
+  { Concatenate noise and label }
+  SetLength(concatenated, Length(z) + Length(y));
+  for i := 0 to High(z) do
+    concatenated[i] := z[i];
+  for i := 0 to High(y) do
+    concatenated[Length(z) + i] := y[i];
+  
+  { Generate conditioned on label }
+  Result := G.Forward(concatenated);
+end;
+
+function ConditionalDiscriminate(D: TDiscriminator; x, y: array of Real): Real;
+var
+  i: Integer;
+  concatenated: array of Real;
+  output: array of Real;
+begin
+  { Concatenate data and label }
+  SetLength(concatenated, Length(x) + Length(y));
+  for i := 0 to High(x) do
+    concatenated[i] := x[i];
+  for i := 0 to High(y) do
+    concatenated[Length(x) + i] := y[i];
+  
+  { Discriminate conditioned on label }
+  output := D.Forward(concatenated);
+  Result := output[0];  { Real/fake score }
+end;
+
+procedure TrainConditionalGAN(var G: TGenerator; var D: TDiscriminator;
+                              realData, labels: array of array of Real;
+                              batchSize: Integer);
+var
+  i: Integer;
+  z: array of Real;
+  fakeData: array of Real;
+  d_real, d_fake, d_loss, g_loss: Real;
+begin
+  { Train Discriminator }
+  { Real data with correct label should score high }
+  d_real := 0.0;
+  for i := 0 to batchSize-1 do
+    d_real := d_real + Ln(ConditionalDiscriminate(D, realData[i], labels[i]));
+  
+  { Fake data with label should score low }
+  d_fake := 0.0;
+  for i := 0 to batchSize-1 do
+  begin
+    z := SampleNoise(G.latentDim);
+    fakeData := ConditionalGenerate(G, z, labels[i]);
+    d_fake := d_fake + Ln(1 - ConditionalDiscriminate(D, fakeData, labels[i]));
+  end;
+  
+  d_loss := -(d_real + d_fake) / batchSize;
+  D.Backward();
+  D.UpdateWeights();
+  
+  { Train Generator }
+  { Fake data should fool discriminator when paired with label }
+  g_loss := 0.0;
+  for i := 0 to batchSize-1 do
+  begin
+    z := SampleNoise(G.latentDim);
+    fakeData := ConditionalGenerate(G, z, labels[i]);
+    g_loss := g_loss - Ln(ConditionalDiscriminate(D, fakeData, labels[i]));
+  end;
+  
+  g_loss := g_loss / batchSize;
+  D.BackwardToGenerator(G);
+  G.UpdateWeights();
+end;
+
+{ Applications of Conditional GANs: }
+{ - Text-to-image (DALL-E style, condition on text embeddings) }
+{ - Image-to-image translation (pix2pix, condition on input image) }
+{ - Class-conditional generation (generate specific digit/object) }
+{ - Style transfer (condition on style vector) }
+{ - Super-resolution (condition on low-res input) }
+
+{ Conditional GAN cross-references: }
+{ Uses all core GAN equations (31-34) with conditioning }
+{ Text conditioning often uses Transformer embeddings (Eq 5-7) }
+{ Image conditioning uses CNN features (Eq 25-27) }</code></pre>
+        
+        <div class="network-tags">
+            <span class="network-tag tag-gan">GAN</span>
+        </div>
+    </div>
+
+    <h2>From Math to Production: The Complete Pipeline</h2>
+
+    <div class="equation-card">
+        <span class="label">The GlassBoxAI Learning Path</span>
+        <p class="description">Each equation connects to working implementations across the entire ecosystem.</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Example: Equation 25 (2D Convolution)</div>
+            <div class="symbol-item">1. <strong>Mathematical notation</strong> (this page) - Understand the formula $$S(i,j) = \sum_{m,n} I(i \cdot s + m, j \cdot s + n) \cdot K(m,n)$$</div>
+            <div class="symbol-item">2. <strong>Pascal algorithm</strong> (this page) - See the explicit loops showing exactly how convolution works</div>
+            <div class="symbol-item">3. <strong>Working prototype</strong> - <a href="https://github.com/matthewJamesAbbott/Pascal-Datastructures/blob/main/CNN.pas" style="color: #00ff9d;">CNN.pas</a> in Pascal-Datastructures repo</div>
+            <div class="symbol-item">4. <strong>Facade introspection</strong> - <a href="https://github.com/matthewJamesAbbott/Pascal-Datastructures/blob/main/FacadeCNN.pas" style="color: #00ff9d;">FacadeCNN.pas</a> with full layer inspection</div>
+            <div class="symbol-item">5. <strong>Production CUDA/Rust</strong> - <a href="https://github.com/matthewJamesAbbott/GlassBoxAI-CNN" style="color: #00ff9d;">GlassBoxAI-CNN</a> with formal verification</div>
+            <div class="symbol-item">6. <strong>Browser demo</strong> - <a href="https://github.com/matthewJamesAbbott/Javascript-CNN" style="color: #00ff9d;">JavaScript-CNN</a> (run instantly, no install)</div>
+        </div>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Example: Equation 5 (Scaled Dot-Product Attention)</div>
+            <div class="symbol-item">1. <strong>Mathematical notation</strong> (this page) - The core attention mechanism</div>
+            <div class="symbol-item">2. <strong>Pascal algorithm</strong> (this page) - Explicit Q·K<sup>T</sup>/√d<sub>k</sub> computation</div>
+            <div class="symbol-item">3. <strong>Working prototype</strong> - <a href="https://github.com/matthewJamesAbbott/Pascal-Datastructures/blob/main/Transformer.pas" style="color: #00ff9d;">Transformer.pas</a> with GGUF loading</div>
+            <div class="symbol-item">4. <strong>Facade introspection</strong> - <a href="https://github.com/matthewJamesAbbott/Pascal-Datastructures/blob/main/FacadeTransformer.pas" style="color: #00ff9d;">FacadeTransformer.pas</a> for QKV inspection</div>
+            <div class="symbol-item">5. <strong>Production multi-GPU</strong> - <a href="https://github.com/matthewJamesAbbott/GlassBoxAI-Transformer" style="color: #00ff9d;">GlassBoxAI-Transformer</a> with DTX Layer 2 protocol, 99 Kani proofs</div>
+            <div class="symbol-item">6. <strong>Browser demo</strong> - <a href="https://github.com/matthewJamesAbbott/Javascript-Transformer" style="color: #00ff9d;">JavaScript-Transformer</a></div>
+        </div>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Example: Equation 31 (GAN Minimax Loss)</div>
+            <div class="symbol-item">1. <strong>Mathematical notation</strong> (this page) - The adversarial game formulation</div>
+            <div class="symbol-item">2. <strong>Pascal algorithm</strong> (this page) - Alternating D/G optimization</div>
+            <div class="symbol-item">3. <strong>Working prototype</strong> - <a href="https://github.com/matthewJamesAbbott/Pascal-Datastructures/blob/main/GAN.pas" style="color: #00ff9d;">GAN.pas</a> in datastructures repo</div>
+            <div class="symbol-item">4. <strong>Audio GAN</strong> - <a href="https://github.com/matthewJamesAbbott/Pascal-Datastructures/blob/main/AudioGAN.pas" style="color: #00ff9d;">AudioGAN.pas</a> for waveform generation</div>
+            <div class="symbol-item">5. <strong>Production implementation</strong> - GlassBoxAI-GAN (coming soon)</div>
+            <div class="symbol-item">6. <strong>Browser demo</strong> - JavaScript-GAN (coming soon)</div>
+        </div>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">The Complete GlassBoxAI Ecosystem:</div>
+            <div class="symbol-item"><strong>Core Math</strong> (this page) - 35 equations with Pascal implementations</div>
+            <div class="symbol-item"><strong>Pascal-Datastructures</strong> - <a href="https://github.com/matthewJamesAbbott/Pascal-Datastructures" style="color: #00ff9d;">All prototypes and algorithms</a></div>
+            <div class="symbol-item"><strong>Production Suite:</strong></div>
+            <div class="symbol-item">  • <a href="https://github.com/matthewJamesAbbott/GlassBoxAI-Transformer" style="color: #00ff9d;">Transformer</a> - LLM inference, GGUF, DTX distributed, 99 proofs</div>
+            <div class="symbol-item">  • <a href="https://github.com/matthewJamesAbbott/GlassBoxAI-CNN" style="color: #00ff9d;">CNN</a> - Computer vision, ONNX export, Qt GUI, 40+ proofs</div>
+            <div class="symbol-item">  • <a href="https://github.com/matthewJamesAbbott/GlassBoxAI-RNN" style="color: #00ff9d;">RNN</a> - Sequence modeling, LSTM/GRU support</div>
+            <div class="symbol-item">  • <a href="https://github.com/matthewJamesAbbott/GlassBoxAI-GNN" style="color: #00ff9d;">GNN</a> - Graph learning, PageRank, 95 verifications</div>
+            <div class="symbol-item">  • <a href="https://github.com/matthewJamesAbbott/GlassBoxAI-MLP" style="color: #00ff9d;">MLP</a> - Feedforward networks</div>
+            <div class="symbol-item">  • <a href="https://github.com/matthewJamesAbbott/GlassBoxAI-RandomForest" style="color: #00ff9d;">RandomForest</a> - Decision tree ensembles</div>
+            <div class="symbol-item"><strong>Browser Demos:</strong> <a href="https://github.com/matthewJamesAbbott/GlassBoxAI-JsPlayers" style="color: #00ff9d;">All JavaScript implementations</a></div>
+        </div>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Philosophy: No Magic Allowed</div>
+            <div class="symbol-item"><em>"The only magic is the act we do that we don't understand. We make glassboxes here. No magic is allowed."</em></div>
+            <div class="symbol-item">• Every operation is visible and inspectable</div>
+            <div class="symbol-item">• Facade pattern provides deep introspection at every layer</div>
+            <div class="symbol-item">• Formal verification proves correctness (not just tests specific cases)</div>
+            <div class="symbol-item">• CISA/NSA Secure by Design compliance throughout</div>
+            <div class="symbol-item">• Complete progression from math → algorithm → prototype → production</div>
+        </div>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">License & Philosophy:</div>
+            <div class="symbol-item">All code is <strong>MIT Licensed</strong> - hack it, learn from it, build with it, commercialize it</div>
+            <div class="symbol-item">Knowledge should be free and accessible to everyone</div>
+            <div class="symbol-item">The kid in Mumbai with a phone deserves the same resources as the Stanford grad student</div>
+            <div class="symbol-item"><strong>We all deserve a fair go</strong></div>
+        </div>
+    </div>
+
+    <h2>Cross-Reference Guide</h2>
+
+    <div class="equation-card">
+        <span class="label">Network Type → Relevant Core Equations</span>
+        <p class="description">Quick reference showing which foundational equations are used by each architecture.</p>
+        
+        <div class="symbol-key">
+            <div class="symbol-key-title">Transformer (Equations 1-18):</div>
+            <div class="symbol-item">• Core: 1 (Softmax), 2 (Cross-Entropy), 3 (SGD), 4 (Chain Rule)</div>
+            <div class="symbol-item">• Architecture: 5 (Attention), 6 (LayerNorm), 7 (Multi-Head), 8 (GELU)</div>
+            <div class="symbol-item">• Efficiency: 12 (LoRA), 13 (Quantization), 14 (RMSNorm), 15 (RoPE)</div>
+            <div class="symbol-item">• Production: 16 (Chinchilla), 17 (Memory), 18 (RoPE Calculus)</div>
+        </div>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">MLP (Equation 19):</div>
+            <div class="symbol-item">• Uses: 1 (Softmax output), 2 (Loss), 3 (SGD), 4 (Chain Rule), 8 (GELU), 13 (Quantization)</div>
+        </div>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">RNN (Equations 20-21):</div>
+            <div class="symbol-item">• Uses: 3 (SGD across time), 4 (BPTT), 8 (or Tanh), 15 (hybrid), 17 (Memory critical)</div>
+        </div>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">GNN (Equations 22-24):</div>
+            <div class="symbol-item">• Uses: 5 (GAT attention), 6 (prevent oversmoothing), 9 (node similarity), 13 (graph compression), 17 (adjacency memory)</div>
+        </div>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">CNN (Equations 25-27):</div>
+            <div class="symbol-item">• Uses: 4 (transposed conv gradients), 8 (GELU/ReLU), 13 (weight compression), 17 (feature map memory)</div>
+        </div>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">Random Forest (Equations 28-30):</div>
+            <div class="symbol-item">• Uses: 9 (tree diversity), 13 (threshold quantization), 17 (tree storage)</div>
+        </div>
+
+        <div class="symbol-key">
+            <div class="symbol-key-title">GAN (Equations 31-35):</div>
+            <div class="symbol-item">• Core: 1 (Softmax for D), 2 (Cross-Entropy), 3 (SGD/Adam), 4 (Chain Rule through G→D)</div>
+            <div class="symbol-item">• Loss Functions: 31 (Minimax), 32 (Wasserstein), 33 (Non-saturating G)</div>
+            <div class="symbol-item">• Diagnostics: 34 (Mode collapse detection), 10 (L2 distance for diversity)</div>
+            <div class="symbol-item">• Conditional: 35 (cGAN with label conditioning)</div>
+            <div class="symbol-item">• Advanced: Can use CNN (25-27) for image G/D, Transformer (5-7) for text conditioning</div>
+        </div>
     </div>
 
 </body>
