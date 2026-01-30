@@ -707,7 +707,6 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 
 **Matthew Abbott**  
 Email: mattbachg@gmail.com  
-GitHub: [@matthewJamesAbbott](https://github.com/matthewJamesAbbott)
 
 ---
 
