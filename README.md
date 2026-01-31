@@ -505,6 +505,19 @@ Understanding how equations combine across architectures is crucial:
 
 This resource is part of the **GlassBoxAI Suite** - a collection of formally verified, production-ready ML implementations:
 
+dont follow the kani proofs it is far morethan my agent read here.
+
+well over 100 for some I will through it manually and fix it
+
+also remember this is a very fast moving account so even when I fix it
+I may be behind in number
+
+I will not push unless (in the cudarc world) I have done all harness checks for new addtions as well.
+
+it is what it is no one elss is even trying in the open source world.
+
+an addtion rust is crap what is wrong with you all.
+
 | Project | Description | Equations Used | Status |
 |---------|-------------|----------------|--------|
 | **[GlassBoxAI-Transformer](https://github.com/matthewJamesAbbott/GlassBoxAI-Transformer)** | Full LLM inference with GGUF support, DTX protocol | 1-8, 12-18 | ✅ 99 Kani Proofs |
