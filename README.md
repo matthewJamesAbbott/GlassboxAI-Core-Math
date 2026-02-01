@@ -1,6 +1,6 @@
 # GlassBoxAI-Core-Math
 
-## **The 35 Essential Equations for AI Engineering**
+## **The 42 Essential Equations for AI Engineering**
 
 ### *Mathematical Foundations with Pascal Implementations*
 
