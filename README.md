@@ -35,7 +35,7 @@ This resource is designed for three audiences:
 
 ## **Table of Contents**
 
-1. [The 35 Equations](#the-35-equations)
+1. [The 42 Equations](#the-42-equations)
 2. [Architecture Coverage](#architecture-coverage)
 3. [How to Use This Resource](#how-to-use-this-resource)
 4. [Why Pascal?](#why-pascal)
@@ -48,7 +48,7 @@ This resource is designed for three audiences:
 
 ---
 
-## **The 35 Equations**
+## **The 42 Equations**
 
 ### **Phase 1: The Foundations (Equations 1-4)**
 
